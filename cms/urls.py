@@ -2,7 +2,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 
 # There is a course creators admin table.
-from ratelimitbackend import admin
+from edx_admin import admin
+
 admin.autodiscover()
 
 # pylint: disable=bad-continuation
@@ -206,3 +207,15 @@ urlpatterns += (
     url(r'404', handler404),
     url(r'500', handler500),
 )
+
+# Third-party auth.
+if settings.FEATURES.get('ENABLE_THIRD_PARTY_AUTH'):
+    urlpatterns += (
+        url(r'', include('third_party_auth.urls')),
+    )
+
+# Django-sudo
+if settings.FEATURES.get('ENABLE_DJANGO_SUDO', False):
+    urlpatterns += (
+        url(r'^sudo/$', 'sudo.views.sudo'),
+    )

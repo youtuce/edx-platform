@@ -408,6 +408,9 @@ FEATURES = {
 
     # Enable LTI Provider feature.
     'ENABLE_LTI_PROVIDER': False,
+
+    # Enable django-sudo
+    'ENABLE_DJANGO_SUDO': True,
 }
 
 # Ignore static asset files on import which match this pattern
@@ -502,6 +505,7 @@ TEMPLATE_DIRS = [
     COMMON_ROOT / 'lib' / 'capa' / 'capa' / 'templates',
     COMMON_ROOT / 'djangoapps' / 'pipeline_mako' / 'templates',
     COMMON_ROOT / 'static',  # required to statically include common Underscore templates
+    COMMON_ROOT / 'djangoapps' / 'django_sudo_helpers' / 'templates',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -1170,6 +1174,7 @@ MIDDLEWARE_CLASSES = (
 
     # catches any uncaught RateLimitExceptions and returns a 403 instead of a 500
     'ratelimitbackend.middleware.RateLimitMiddleware',
+
     # needs to run after locale middleware (or anything that modifies the request context)
     'edxmako.middleware.MakoMiddleware',
 
@@ -2677,3 +2682,19 @@ PROCTORING_BACKEND_PROVIDER = {
     'options': {},
 }
 PROCTORING_SETTINGS = {}
+
+
+########## django-sudo ##########
+def apply_django_sudo_settings(django_settings):
+    """Set provider-independent settings."""
+    # force re-authentication before activating administrative functions
+    django_settings.MIDDLEWARE_CLASSES += (
+        'sudo.middleware.SudoMiddleware',
+        'django_sudo_helpers.middleware.DjangoSudoMiddleware',
+    )
+
+    # Allows sudo-mode
+    django_settings.INSTALLED_APPS += (
+        'sudo',
+        'django_sudo_helpers'
+    )

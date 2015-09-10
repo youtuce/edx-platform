@@ -33,7 +33,16 @@ class LoggerBackend(BaseBackend):
         self.event_logger = logging.getLogger(name)
 
     def send(self, event):
-        event_str = json.dumps(event, cls=DateTimeJSONEncoder)
+        try:
+            event_str = json.dumps(event, cls=DateTimeJSONEncoder)
+        except UnicodeDecodeError:
+            # Will throw UnicodeDecodeError incase when there are
+            # latin1 encoded characters in string.
+            # Example {'string': '\xd3 \xe9 \xf1'}
+            for key in event.iterkeys():
+                if isinstance(event[key], str):
+                    event[key] = event[key].decode('latin1')
+            event_str = json.dumps(event, cls=DateTimeJSONEncoder)
 
         # TODO: remove trucation of the serialized event, either at a
         # higher level during the emittion of the event, or by

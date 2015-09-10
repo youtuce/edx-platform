@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+Tests for tracking logger.
+"""
 from __future__ import absolute_import
 
 import json
@@ -20,10 +24,9 @@ class TestLoggerBackend(TestCase):
         logger.addHandler(self.handler)
 
         self.backend = LoggerBackend(name=logger_name)
-
-    def test_logger_backend(self):
         self.handler.reset()
 
+    def test_logger_backend(self):
         # Send a couple of events and check if they were recorded
         # by the logger. The events are serialized to JSON.
 
@@ -46,6 +49,34 @@ class TestLoggerBackend(TestCase):
 
         self.assertEqual(saved_events[0], unpacked_event)
         self.assertEqual(saved_events[1], unpacked_event)
+
+    def test_logger_backend_unicode_character(self):
+        """
+        When event information contain utf and latin1 characters
+        """
+        # Utf-8 characters
+        event_string_unicode = {'string': '测试'}
+        event_unicode_characters = {'string': u'测试'}
+        event_encoded_unicode_characters_string = {
+            'string': event_unicode_characters['string'].encode('utf-8')
+        }  # pylint: disable=invalid-name
+        # Latin1 characters
+        event_string_latin_characters = {'string': 'Ó é ñ'}
+        event_unicode_latin_characters = {'string': u'Ó é ñ'}
+        event_encoded_latin_characters_string = {
+            'string': event_unicode_latin_characters['string'].encode('latin1')
+        }  # pylint: disable=invalid-name
+
+        self.backend.send(event_string_unicode)
+        self.backend.send(event_unicode_characters)
+        self.backend.send(event_encoded_unicode_characters_string)
+
+        self.backend.send(event_string_latin_characters)
+        self.backend.send(event_unicode_latin_characters)
+        self.backend.send(event_encoded_latin_characters_string)
+
+        # No Exception Occurs
+        self.assert_(True)
 
 
 class MockLoggingHandler(logging.Handler):

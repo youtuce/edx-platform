@@ -17,6 +17,7 @@ from .common import *  # pylint: disable=wildcard-import, unused-wildcard-import
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'ATOMIC_REQUESTS': True,
     },
 
 }
@@ -28,8 +29,8 @@ STATICFILES_STORAGE = 'openedx.core.lib.django_require.staticstorage.OptimizedCa
 
 # Revert to the default set of finders as we don't want to dynamically pick up files from the pipeline
 STATICFILES_FINDERS = [
-    'staticfiles.finders.FileSystemFinder',
-    'staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
 # Redirect to the test_root folder within the repo

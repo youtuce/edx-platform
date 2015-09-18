@@ -92,7 +92,6 @@ STATICFILES_DIRS += [
 # http://stackoverflow.com/questions/12816941/unit-testing-with-django-pipeline
 STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
 STATIC_URL = "/static/"
-PIPELINE_ENABLED = False
 
 # Update module store settings per defaults for tests
 update_module_store_settings(
@@ -129,8 +128,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': TEST_ROOT / "db" / "cms.db",
+        'ATOMIC_REQUESTS': True,
     },
 }
+
+# This hack disables migrations during tests. We want to create tables directly from the models for speed.
+# See https://groups.google.com/d/msg/django-developers/PWPj3etj3-U/kCl6pMsQYYoJ.
+MIGRATION_MODULES = { app: "app.migrations_not_used_in_tests" for app in INSTALLED_APPS }
 
 LMS_BASE = "localhost:8000"
 FEATURES['PREVIEW_LMS_BASE'] = "preview"
@@ -172,11 +176,8 @@ CACHES = {
     },
 }
 
-# Add external_auth to Installed apps for testing
-INSTALLED_APPS += ('external_auth', )
-
-# Add milestones to Installed apps for testing
-INSTALLED_APPS += ('milestones', 'openedx.core.djangoapps.call_stack_manager')
+# Add apps to Installed apps for testing
+INSTALLED_APPS += ('openedx.core.djangoapps.call_stack_manager',)
 
 # hide ratelimit warnings while running tests
 filterwarnings('ignore', message='No request passed to the backend, unable to rate-limit')

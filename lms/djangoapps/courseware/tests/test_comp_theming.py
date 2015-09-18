@@ -5,7 +5,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from path import path           # pylint: disable=no-name-in-module
-import staticfiles
+from django.contrib import staticfiles
 
 from openedx.core.djangoapps.theming.test_util import with_comp_theme
 from openedx.core.lib.tempdir import mkdtemp_clean
@@ -18,7 +18,7 @@ class TestComprehensiveTheming(TestCase):
         super(TestComprehensiveTheming, self).setUp()
 
         # Clear the internal staticfiles caches, to get test isolation.
-        staticfiles.finders._finders.clear()                    # pylint: disable=protected-access
+        staticfiles.finders.get_finder.cache_clear()
 
     @with_comp_theme(settings.REPO_ROOT / 'themes/red-theme')
     @unittest.skip("Disabled until we can release theming to production")

@@ -74,11 +74,6 @@ BROKER_HEARTBEAT_CHECKRATE = 2
 # Each worker should only fetch one message at a time
 CELERYD_PREFETCH_MULTIPLIER = 1
 
-# Skip djcelery migrations, since we don't use the database as the broker
-SOUTH_MIGRATION_MODULES = {
-    'djcelery': 'ignore',
-}
-
 # Rename the exchange and queues for each variant
 
 QUEUE_VARIANT = CONFIG_PREFIX.lower()
@@ -130,9 +125,6 @@ if STATIC_URL_BASE:
     STATIC_URL = STATIC_URL_BASE.encode('ascii')
     if not STATIC_URL.endswith("/"):
         STATIC_URL += "/"
-
-# Enable uglification of JavaScript
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.uglifyjs.UglifyJSCompressor'
 
 # DEFAULT_COURSE_ABOUT_IMAGE_URL specifies the default image to show for courses that don't provide one
 DEFAULT_COURSE_ABOUT_IMAGE_URL = ENV_TOKENS.get('DEFAULT_COURSE_ABOUT_IMAGE_URL', DEFAULT_COURSE_ABOUT_IMAGE_URL)
@@ -432,6 +424,10 @@ FILE_UPLOAD_STORAGE_PREFIX = ENV_TOKENS.get('FILE_UPLOAD_STORAGE_PREFIX', FILE_U
 # function in util/query.py, which is useful for very large database reads
 DATABASES = AUTH_TOKENS['DATABASES']
 
+# Enable automatic transaction management on all databases
+for database_name in DATABASES:
+    DATABASES[database_name]['ATOMIC_REQUESTS'] = True
+
 XQUEUE_INTERFACE = AUTH_TOKENS['XQUEUE_INTERFACE']
 
 # Get the MODULESTORE from auth.json, but if it doesn't exist,
@@ -666,9 +662,9 @@ ECOMMERCE_API_TIMEOUT = ENV_TOKENS.get('ECOMMERCE_API_TIMEOUT', ECOMMERCE_API_TI
 
 ##### Custom Courses for EdX #####
 if FEATURES.get('CUSTOM_COURSES_EDX'):
-    INSTALLED_APPS += ('ccx',)
+    INSTALLED_APPS += ('lms.djangoapps.ccx',)
     FIELD_OVERRIDE_PROVIDERS += (
-        'ccx.overrides.CustomCoursesForEdxOverrideProvider',
+        'lms.djangoapps.ccx.overrides.CustomCoursesForEdxOverrideProvider',
     )
 
 ##### Individual Due Date Extensions #####

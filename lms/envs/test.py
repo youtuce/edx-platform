@@ -26,6 +26,11 @@ from warnings import filterwarnings, simplefilter
 
 from openedx.core.lib.tempdir import mkdtemp_clean
 
+# This patch disabes the commit_on_success decorator during tests
+# in TestCase subclasses.
+from util.testing import patch_testcase
+patch_testcase()
+
 # Silence noisy logs to make troubleshooting easier when tests fail.
 import logging
 LOG_OVERRIDES = [
@@ -129,6 +134,8 @@ XQUEUE_WAITTIME_BETWEEN_REQUESTS = 5  # seconds
 MOCK_STAFF_GRADING = True
 MOCK_PEER_GRADING = True
 
+############################ STATIC FILES #############################
+
 # TODO (cpennington): We need to figure out how envs/test.py can inject things
 # into common.py so that we don't have to repeat this sort of thing
 STATICFILES_DIRS = [
@@ -146,7 +153,9 @@ STATICFILES_DIRS += [
 # find pipelined assets will raise a ValueError.
 # http://stackoverflow.com/questions/12816941/unit-testing-with-django-pipeline
 STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
-PIPELINE_ENABLED = False
+
+# Don't use compression during tests
+PIPELINE_JS_COMPRESSOR = None
 
 update_module_store_settings(
     MODULESTORE,
@@ -176,10 +185,15 @@ CONTENTSTORE = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': TEST_ROOT / 'db' / 'edx.db'
+        'NAME': TEST_ROOT / 'db' / 'edx.db',
+        'ATOMIC_REQUESTS': True,
     },
 
 }
+
+# This hack disables migrations during tests. We want to create tables directly from the models for speed.
+# See https://groups.google.com/d/msg/django-developers/PWPj3etj3-U/kCl6pMsQYYoJ.
+MIGRATION_MODULES = { app: "app.migrations_not_used_in_tests" for app in INSTALLED_APPS }
 
 CACHES = {
     # This is the cache used for most things.
@@ -487,8 +501,8 @@ FEATURES['ENABLE_EDXNOTES'] = True
 # Enable teams feature for tests.
 FEATURES['ENABLE_TEAMS'] = True
 
-# Add milestones to Installed apps for testing
-INSTALLED_APPS += ('milestones', 'openedx.core.djangoapps.call_stack_manager')
+# Add apps to Installed apps for testing
+INSTALLED_APPS += ('openedx.core.djangoapps.call_stack_manager',)
 
 # Enable courseware search for tests
 FEATURES['ENABLE_COURSEWARE_SEARCH'] = True
@@ -504,7 +518,7 @@ FACEBOOK_APP_ID = "Test"
 FACEBOOK_API_VERSION = "v2.2"
 
 ######### custom courses #########
-INSTALLED_APPS += ('ccx',)
+INSTALLED_APPS += ('lms.djangoapps.ccx',)
 FEATURES['CUSTOM_COURSES_EDX'] = True
 
 # Set dummy values for profile image settings.

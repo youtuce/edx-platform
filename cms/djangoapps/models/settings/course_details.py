@@ -12,6 +12,7 @@ from contentstore.utils import course_image_url, has_active_web_certificate
 from models.settings import course_grading
 from xmodule.fields import Date
 from xmodule.modulestore.django import modulestore
+from xmodule.modulestore import ModuleStoreEnum
 
 # This list represents the attribute keys for a course's 'about' info.
 # Note: The 'video' attribute is intentionally excluded as it must be
@@ -108,6 +109,7 @@ class CourseDetails(object):
         store = modulestore()
         if data is None:
             try:
+                store.delete_item(temploc, user.id, revision=ModuleStoreEnum.RevisionOption.published_only)
                 store.delete_item(temploc, user.id)
             # Ignore an attempt to delete an item that doesn't exist
             except ValueError:

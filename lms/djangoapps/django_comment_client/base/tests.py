@@ -48,7 +48,7 @@ class MockRequestSetupMixin(object):
         mock_request.return_value = self._create_response_mock(data)
 
 
-@patch('lms.lib.comment_client.utils.requests.request')
+@patch('lms.lib.comment_client.utils.requests.request', autospec=True)
 class CreateThreadGroupIdTestCase(
         MockRequestSetupMixin,
         CohortedTestCase,
@@ -83,7 +83,7 @@ class CreateThreadGroupIdTestCase(
         self._assert_json_response_contains_group_info(response)
 
 
-@patch('lms.lib.comment_client.utils.requests.request')
+@patch('lms.lib.comment_client.utils.requests.request', autospec=True)
 @disable_signal(views, 'thread_edited')
 @disable_signal(views, 'thread_voted')
 @disable_signal(views, 'thread_deleted')
@@ -348,7 +348,7 @@ class ViewsTestCaseMixin(object):
 
 
 @ddt.ddt
-@patch('lms.lib.comment_client.utils.requests.request')
+@patch('lms.lib.comment_client.utils.requests.request', autospec=True)
 @disable_signal(views, 'thread_created')
 @disable_signal(views, 'thread_edited')
 class ViewsQueryCountTestCase(UrlResetMixin, ModuleStoreTestCase, MockRequestSetupMixin, ViewsTestCaseMixin):
@@ -401,7 +401,7 @@ class ViewsQueryCountTestCase(UrlResetMixin, ModuleStoreTestCase, MockRequestSet
 
 
 @ddt.ddt
-@patch('lms.lib.comment_client.utils.requests.request')
+@patch('lms.lib.comment_client.utils.requests.request', autospec=True)
 class ViewsTestCase(
         UrlResetMixin,
         ModuleStoreTestCase,
@@ -984,7 +984,7 @@ class ViewsTestCase(
         self.assertEqual(response.status_code, 200)
 
 
-@patch("lms.lib.comment_client.utils.requests.request")
+@patch("lms.lib.comment_client.utils.requests.request", autospec=True)
 @disable_signal(views, 'comment_endorsed')
 class ViewPermissionsTestCase(UrlResetMixin, ModuleStoreTestCase, MockRequestSetupMixin):
     @patch.dict("django.conf.settings.FEATURES", {"ENABLE_DISCUSSION_SERVICE": True})
@@ -1239,7 +1239,7 @@ class CreateSubCommentUnicodeTestCase(ModuleStoreTestCase, UnicodeTestMixin, Moc
 
 
 @ddt.ddt
-@patch("lms.lib.comment_client.utils.requests.request")
+@patch("lms.lib.comment_client.utils.requests.request", autospec=True)
 @disable_signal(views, 'thread_voted')
 @disable_signal(views, 'thread_edited')
 @disable_signal(views, 'comment_created')

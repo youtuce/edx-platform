@@ -12,7 +12,7 @@ from mock import patch
 from xmodule.exceptions import HeartbeatFailure
 
 
-@patch('heartbeat.views.modulestore')
+@patch('heartbeat.views.modulestore', autospec=True)
 class HeartbeatTestCase(TestCase):
     """
     Test the heartbeat

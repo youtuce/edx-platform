@@ -1091,7 +1091,7 @@ class CheckoutTestMixin(object):
         self.assertEqual(data, {'foo': 'bar'})
 
 
-@patch('verify_student.views.checkout_with_shoppingcart', return_value=TEST_PAYMENT_DATA)
+@patch('verify_student.views.checkout_with_shoppingcart', return_value=TEST_PAYMENT_DATA, autospec=True)
 class TestCreateOrderShoppingCart(CheckoutTestMixin, ModuleStoreTestCase):
     """ Test view behavior when the shoppingcart is used. """
 
@@ -1105,7 +1105,7 @@ class TestCreateOrderShoppingCart(CheckoutTestMixin, ModuleStoreTestCase):
 
 
 @override_settings(ECOMMERCE_API_URL=TEST_API_URL, ECOMMERCE_API_SIGNING_KEY=TEST_API_SIGNING_KEY)
-@patch('verify_student.views.checkout_with_ecommerce_service', return_value=TEST_PAYMENT_DATA)
+@patch('verify_student.views.checkout_with_ecommerce_service', return_value=TEST_PAYMENT_DATA, autospec=True)
 class TestCreateOrderEcommerceService(CheckoutTestMixin, ModuleStoreTestCase):
     """ Test view behavior when the ecommerce service is used. """
 

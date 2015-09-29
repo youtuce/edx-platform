@@ -137,7 +137,7 @@ class ClassReturingValue(object):
         return 42 + argument
 
 
-@patch('openedx.core.djangoapps.call_stack_manager.core.log.info')
+@patch('openedx.core.djangoapps.call_stack_manager.core.log.info', autospec=True)
 @patch('openedx.core.djangoapps.call_stack_manager.core.REGULAR_EXPS', [])
 class TestingCallStackManager(TestCase):
     """Tests for call_stack_manager

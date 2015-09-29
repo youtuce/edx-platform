@@ -23,7 +23,7 @@ class ExampleConfig(ConfigurationModel):
     int_field = models.IntegerField(default=10)
 
 
-@patch('config_models.models.cache')
+@patch('config_models.models.cache', autospec=True)
 class ConfigurationModelTests(TestCase):
     """
     Tests of ConfigurationModel
@@ -111,7 +111,7 @@ class ExampleKeyedConfig(ConfigurationModel):
 
 
 @ddt.ddt
-@patch('config_models.models.cache')
+@patch('config_models.models.cache', autospec=True)
 class KeyedConfigurationModelTests(TestCase):
     """
     Tests for ``ConfigurationModels`` with keyed configuration.

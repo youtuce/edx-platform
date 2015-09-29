@@ -134,7 +134,7 @@ class ActivationEmailTests(TestCase):
 
 
 @patch('student.views.render_to_string', Mock(side_effect=mock_render_to_string, autospec=True))
-@patch('django.contrib.auth.models.User.email_user')
+@patch('django.contrib.auth.models.User.email_user', autospec=True)
 class ReactivationEmailTests(EmailTestMixin, TestCase):
     """Test sending a reactivation email to a user"""
 
@@ -306,7 +306,7 @@ class EmailChangeRequestTests(EventTestMixin, TestCase):
         )
 
 
-@patch('django.contrib.auth.models.User.email_user')
+@patch('django.contrib.auth.models.User.email_user', autospec=True)
 @patch('student.views.render_to_response', Mock(side_effect=mock_render_to_response, autospec=True))
 @patch('student.views.render_to_string', Mock(side_effect=mock_render_to_string, autospec=True))
 class EmailChangeConfirmationTests(EmailTestMixin, TransactionTestCase):

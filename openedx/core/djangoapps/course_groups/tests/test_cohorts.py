@@ -24,7 +24,7 @@ from ..tests.helpers import (
 )
 
 
-@patch("openedx.core.djangoapps.course_groups.cohorts.tracker")
+@patch("openedx.core.djangoapps.course_groups.cohorts.tracker", autospec=True)
 class TestCohortSignals(TestCase):
     def setUp(self):
         super(TestCohortSignals, self).setUp()

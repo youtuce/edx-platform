@@ -1262,6 +1262,9 @@ main_vendor_js = base_vendor_js + [
     'js/vendor/jquery.qtip.min.js',
     'js/vendor/swfobject/swfobject.js',
     'js/vendor/jquery.ba-bbq.min.js',
+    'js/vendor/afontgarde/modernizr.fontface-generatedcontent.js',
+    'js/vendor/afontgarde/afontgarde.js',
+    'js/vendor/afontgarde/edx-icons.js'
 ]
 
 # Common files used by both RequireJS code and non-RequireJS code
@@ -1369,6 +1372,7 @@ PIPELINE_CSS = {
             'css/vendor/jquery.qtip.min.css',
             'css/vendor/responsive-carousel/responsive-carousel.css',
             'css/vendor/responsive-carousel/responsive-carousel.slide.css',
+            'js/vendor/afontgarde/afontgarde.css'
         ],
         'output_filename': 'css/lms-style-vendor.css',
     },

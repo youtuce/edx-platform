@@ -37,10 +37,9 @@ function (Sjson, AsyncProcess) {
     VideoCaption.prototype = {
         langTemplate: [
             '<div class="lang menu-container">',
-                '<a href="#" class="hide-subtitles" title="',
-                    gettext('Turn off captions'), '" role="button" aria-disabled="false">',
+                '<button class="control hide-subtitles" aria-disabled="false" aria-pressed="true">',
                     gettext('Turn off captions'),
-                '</a>',
+                '</button>',
             '</div>'
         ].join(''),
 
@@ -85,7 +84,7 @@ function (Sjson, AsyncProcess) {
             this.loaded = false;
             this.subtitlesEl = $(this.template);
             this.container = $(this.langTemplate);
-            this.hideSubtitlesEl = this.container.find('a.hide-subtitles');
+            this.hideSubtitlesEl = this.container.find('.hide-subtitles');
 
             if (_.keys(languages).length) {
                 this.renderLanguageMenu(languages);
@@ -446,7 +445,7 @@ function (Sjson, AsyncProcess) {
 
             $.each(languages, function(code, label) {
                 var li = $('<li data-lang-code="' + code + '" />'),
-                    link = $('<a href="javascript:void(0);">' + label + '</a>');
+                    link = $('<button class="control-lang" href="javascript:void(0);">' + label + '</button>');
 
                 if (currentLang === code) {
                     li.addClass('is-active');
@@ -458,7 +457,7 @@ function (Sjson, AsyncProcess) {
 
             this.container.append(menu);
 
-            menu.on('click', 'a', function (e) {
+            menu.on('click', '.control-lang', function (e) {
                 var el = $(e.currentTarget).parent(),
                     state = self.state,
                     langCode = el.data('lang-code');
@@ -868,6 +867,7 @@ function (Sjson, AsyncProcess) {
                 state.captionsHidden = true;
                 state.el.addClass('closed');
                 text = gettext('Turn on captions');
+                aria = 'false';
                 if (trigger_event) {
                     this.state.el.trigger('captions:hide');
                 }
@@ -876,13 +876,14 @@ function (Sjson, AsyncProcess) {
                 state.el.removeClass('closed');
                 this.scrollCaption();
                 text = gettext('Turn off captions');
+                aria = 'true';
                 if (trigger_event) {
                     this.state.el.trigger('captions:show');
                 }
             }
 
             hideSubtitlesEl
-                .attr('title', text)
+                .attr('aria-pressed', aria)
                 .text(gettext(text));
 
             if (state.resizer) {

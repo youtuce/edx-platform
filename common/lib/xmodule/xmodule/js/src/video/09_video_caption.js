@@ -38,7 +38,12 @@ function (Sjson, AsyncProcess) {
         langTemplate: [
             '<div class="lang menu-container">',
                 '<button class="control hide-subtitles" aria-disabled="false" aria-pressed="true">',
-                    gettext('Turn off captions'),
+                    '<span class="icon-fallback-img">',
+                        '<span class="icon fa fa-cc" aria-hidden="true"></span>',
+                        '<span class="text control-text">',
+                            gettext('Turn off captions'),
+                        '</span>',
+                    '</span>',
                 '</button>',
             '</div>'
         ].join(''),
@@ -884,7 +889,8 @@ function (Sjson, AsyncProcess) {
 
             hideSubtitlesEl
                 .attr('aria-pressed', aria)
-                .text(gettext(text));
+                .find('.control-text')
+                    .text(gettext(text));
 
             if (state.resizer) {
                 if (state.isFullScreen) {

@@ -30,11 +30,15 @@ function (Iterator) {
     SpeedControl.prototype = {
         template: [
             '<div class="speeds menu-container">',
-                '<a class="speed-button" href="#" title="',
-                    gettext('Speeds'), '" role="button" aria-disabled="false">',
-                    '<span class="label">', gettext('Speed'), '</span>',
+                '<button class="control speed-button" aria-disabled="false">',
+                    '<span class="icon-fallback-img">',
+                        '<span class="icon fa fa-caret-right" aria-hidden="true"></span>',
+                        '<span class="text control-text">',
+                            gettext('Speed'),
+                        '</span>',
+                    '</span>',
                     '<span class="value"></span>',
-                '</a>',
+                '</button>',
               '<ol class="video-speeds menu" role="menu"></ol>',
             '</div>'
         ].join(''),
@@ -89,9 +93,9 @@ function (Iterator) {
                 speedsList = $.map(reversedSpeeds, function (speed) {
                     return [
                         '<li data-speed="', speed, '" role="presentation">',
-                            '<a class="speed-link" href="#" role="menuitem" tabindex="-1">',
+                            '<button class="control speed-link" tabindex="-1">',
                                 speed, 'x',
-                            '</a>',
+                            '</button>',
                         '</li>'
                     ].join('');
                 });
@@ -119,7 +123,7 @@ function (Iterator) {
             this.speedsContainer.on({
                 click: this.clickLinkHandler,
                 keydown: this.keyDownLinkHandler
-            }, 'a.speed-link');
+            }, '.speed-link');
 
             this.state.el.on({
                 'speed:set': this.onSetSpeed,

@@ -39,10 +39,16 @@ function() {
 
         template: [
             '<div class="volume">',
-                '<a href="#" role="button" aria-disabled="false" title="',
-                    gettext('Volume'), '" aria-label="',
+                '<button class="control" aria-disabled="false" aria-label="',
                     gettext('Click on this button to mute or unmute this video or press UP or DOWN buttons to increase or decrease volume level.'),
-                    '"></a>',
+                    '">',
+                    '<span class="icon-fallback-img">',
+                        '<span class="icon fa fa-volume-up" aria-hidden="true"></span>',
+                        '<span class="text control-text">',
+                            gettext('Volume'),
+                        '</span>',
+                    '</span>',
+                '</button>',
                 '<div role="presentation" class="volume-slider-container">',
                     '<div class="volume-slider"></div>',
                 '</div>',
@@ -89,7 +95,7 @@ function() {
             // Youtube iframe react on key buttons and has his own handlers.
             // So, we disallow focusing on iframe.
             this.state.el.find('iframe').attr('tabindex', -1);
-            this.button = this.el.children('a');
+            this.button = this.el.children('.control');
             this.cookie = new CookieManager(this.min, this.max);
             this.a11y = new Accessibility(
                 this.button, this.min, this.max, this.i18n

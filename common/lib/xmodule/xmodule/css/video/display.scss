@@ -1,3 +1,62 @@
+// This is for A Font Garde
+// It loads the icon font only when it's available.
+// ---
+// It is scoped to the video player for now, but we
+// will eventually want to move this to the main font
+// sheet, globally, so it applies to all use cases.
+
+// --------
+// Defaults: what displays if the icon font doesn't load.
+// --------
+
+// the html target is necessary for xblocks and xmodules, but works across the board
+html:not('.afontgarde') .icon-fallback-img {
+
+  .fa-play {
+    background: url('#{$static-path}/images/fontawesome/play.svg') center center no-repeat;
+  }
+
+  .fa-pause {
+    background: url('#{$static-path}/images/fontawesome/pause.svg') center center no-repeat;
+  }
+
+  .fa-step-forward {
+    background: url('#{$static-path}/images/fontawesome/step-forward.svg') center center no-repeat;
+  }
+
+  .fa-arrows-alt {
+    background: url('#{$static-path}/images/fontawesome/arrows-alt.svg') center center no-repeat;
+  }
+
+  .fa-caret-right {
+    background: url('#{$static-path}/images/fontawesome/caret-right.svg') center center no-repeat;
+  }
+
+  .fa-caret-up {
+    background: url('#{$static-path}/images/fontawesome/caret-up.svg') center center no-repeat;
+  }
+
+  .fa-compress {
+    background: url('#{$static-path}/images/fontawesome/compress.svg') center center no-repeat;
+  }
+
+  .fa-cc {
+    background: url('#{$static-path}/images/fontawesome/cc.svg') center center no-repeat;
+  }
+
+  .fa-volume-up {
+    background: url('#{$static-path}/images/fontawesome/volume-up.svg') center center no-repeat;
+  }
+
+  .fa-volume-down {
+    background: url('#{$static-path}/images/fontawesome/volume-down.svg') center center no-repeat;
+  }
+
+  .fa-volume-off {
+    background: url('#{$static-path}/images/fontawesome/volume-off.svg') center center no-repeat;
+  }
+}
+
 & {
     margin-bottom: ($baseline*1.5);
 }
@@ -29,12 +88,14 @@
 
   // CASE: video pre-roll state
   &.is-pre-roll {
+
     .slider {
       visibility: hidden;
     }
 
     .video-player {
       position: relative;
+
       &:before {
         display: block;
         content: "";
@@ -224,7 +285,7 @@
       %control {
         display: inline-block;
         margin: 0;
-        padding: ($baseline / 2.5); // 8px
+        padding: ($baseline / 2) ($baseline / 1.5); // 10px 15px
         border: 0;
         background: rgb(40, 44, 46); // UXPL grayscale-cool x-dark
         box-shadow: none;
@@ -243,35 +304,6 @@
         &.is-active,
         &.active {
           color: rgb(14, 166, 236); // UXPL primary accent
-        }
-      }
-
-      %video-button {
-        @extend %ui-fake-link;
-        @include transition(none);
-        display: block;
-        margin: 0;
-        padding: 0 0 0 15px;
-        overflow: hidden;
-        border-width: 0 1px;
-        border-style: solid;
-        border-color: $black;
-        box-shadow: 1px 0 0 #555, inset 1px 0 0 #555;
-        text-indent: -9999px;
-        color: $white;
-        font-weight: 700;
-        line-height: 46px;
-        -webkit-font-smoothing: antialiased;
-
-        &:hover,
-        &:focus {
-          background-color: #444;
-          color: $white;
-        }
-
-        &:active {
-          color: $white;
-          background-color: #444;
         }
       }
 
@@ -298,22 +330,24 @@
         margin-left: -1px;
         margin-right: -1px;
         height: ($baseline / 2);
-        border: 1px solid rgb(79, 89, 93); // UXPL grayscale-cool dark
-        border-radius: 0;
-        border-top: 1px solid rgb(79, 89, 93); // UXPL grayscale-cool dark
+        border: 0px;
         background: rgb(79, 89, 93); // UXPL grayscale-cool dark
         -webkit-transition: -webkit-transform 0.7s ease-in-out;
         -moz-transition: -moz-transform 0.7s ease-in-out;
         -ms-transition: -ms-transform 0.7s ease-in-out;
         transition: transform 0.7s ease-in-out;
 
+        &:hover,
+        &:focus {
+        }
+
         .ui-widget-header {
-          background: rgb(79, 89, 93); // UXPL grayscale-cool dark
+          background: rgb(142, 62, 99); // UXPL secondary dark
           box-shadow: none;
         }
 
         .ui-corner-all.slider-range {
-          background-color: #1e91d3;
+          background-color: #1e91d3; // Not sure what this is for.
           opacity: 0.3;
         }
 
@@ -363,34 +397,13 @@
           }
 
           &.play {
-
-            .icon-fallback-img {
-
-              .icon {
-                background: url('#{$static-path}/images/fontawesome/play.svg') center center no-repeat;
-              }
-            }
           }
 
           &.pause {
-
-            .icon-fallback-img {
-
-              .icon {
-                background: url('#{$static-path}/images/fontawesome/pause.svg') center center no-repeat;
-              }
-            }
           }
 
           &.skip {
             white-space: nowrap;
-
-            .icon-fallback-img {
-
-              .icon {
-                background: url('#{$static-path}/images/fontawesome/step-forward.svg') center center no-repeat;
-              }
-            }
           }
         }
 
@@ -493,30 +506,38 @@
           }
 
           .menu {
-            width: 131px;
+            bottom: ($baseline * 1.5); // 30px
             border: none;
+            box-shadow: none;
 
             @media (max-width: 1120px) {
               width: 80px;
             }
 
-            .speed-link {
-              @include text-align(left);
-              display: block;
-              width: 100%;
+            li {
+
+              .speed-link {
+                @include text-align(left);
+                display: block;
+                width: 100%;
+                border-radius: 0;
+              }
+
+              &.is-active {
+
+                .speed-link {
+                  color: rgb(252, 252, 252); // UXPL grayscale white
+                }
+              }
             }
           }
 
           .speed-button {
             @include clearfix();
-            min-width: 116px;
             text-indent: 0;
 
             .icon-fallback-img {
-
-              .icon {
-                background: url('#{$static-path}/images/fontawesome/caret-right.svg') center center no-repeat;
-              }
+              @include float(left);
             }
 
             @media (max-width: 1120px) {
@@ -556,16 +577,6 @@
           display: inline-block;
           position: relative;
 
-          .control {
-
-            .icon-fallback-img {
-
-              .icon {
-                background: url('#{$static-path}/images/fontawesome/volume-up.svg') center center no-repeat;
-              }
-            }
-          }
-
           &.is-opened {
 
             .volume-slider-container {
@@ -593,7 +604,7 @@
             @extend %ui-depth1;
             display: none;
             position: absolute;
-            bottom: 46px;
+            bottom: ($baseline * 1.5); // 30
             width: 45px;
             height: 125px;
             margin-left: -1px;
@@ -633,13 +644,6 @@
         }
 
         .add-fullscreen {
-
-          .icon-fallback-img {
-
-            .icon {
-              background: url('#{$static-path}/images/fontawesome/arrows-alt.svg') center center no-repeat;
-            }
-          }
         }
 
         .quality-control {

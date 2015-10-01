@@ -49,11 +49,12 @@ ADDED BY afontgarde.js:
 .icon-fallback-img .icon {
     display: inline-block;
 }
-.icon-fallback-img .icon:before {
+
+// Necessary for xblocks and xmodules, but works across the board
+html:not('.afontgarde') .icon-fallback-img .icon:before {
     content: "";
 }
 /* The img fallback version is not as reliable since it does not check to make sure the fontloaded font has loaded. If we did add the .fontloaded class, it would unnecessarily request the fallback image. */
-.FontAwesome .icon-fallback-img .icon,
 .fontawesome .icon-fallback-img .icon {
     background-image: none;
 }

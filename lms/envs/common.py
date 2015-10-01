@@ -1368,11 +1368,11 @@ credit_web_view_js = [
 PIPELINE_CSS = {
     'style-vendor': {
         'source_filenames': [
+            'js/vendor/afontgarde/afontgarde.css',
             'css/vendor/font-awesome.css',
             'css/vendor/jquery.qtip.min.css',
             'css/vendor/responsive-carousel/responsive-carousel.css',
-            'css/vendor/responsive-carousel/responsive-carousel.slide.css',
-            'js/vendor/afontgarde/afontgarde.css'
+            'css/vendor/responsive-carousel/responsive-carousel.slide.css'
         ],
         'output_filename': 'css/lms-style-vendor.css',
     },

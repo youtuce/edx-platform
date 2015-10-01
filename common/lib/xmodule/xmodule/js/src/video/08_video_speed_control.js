@@ -37,6 +37,7 @@ function (Iterator) {
                             gettext('Speed'),
                         '</span>',
                     '</span>',
+                    '<span class="label">Speed</span>',
                     '<span class="value"></span>',
                 '</button>',
               '<ol class="video-speeds menu" role="menu"></ol>',

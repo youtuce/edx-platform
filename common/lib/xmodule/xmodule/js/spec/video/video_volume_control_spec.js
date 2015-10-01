@@ -63,17 +63,15 @@ describe('VideoVolumeControl', function () {
         });
 
         it('add ARIA attributes to volume control', function () {
-            var button = $('.volume > a');
+            var button = $('.volume > .control');
 
             expect(button).toHaveAttrs({
-                'role': 'button',
-                'title': 'Volume',
                 'aria-disabled': 'false'
             });
         });
 
         it('bind the volume control', function () {
-            var button = $('.volume > a');
+            var button = $('.volume > .control');
 
             expect(button).toHandle('keydown');
             expect(button).toHandle('mousedown');
@@ -302,7 +300,7 @@ describe('VideoVolumeControl', function () {
 
         it('nothing happens if ALT+ENTER are pushed down', function () {
             var isMuted = volumeControl.getMuteStatus();
-            $('.volume > a').trigger(jQuery.Event("keydown", {
+            $('.volume > .control').trigger(jQuery.Event("keydown", {
                 keyCode: $.ui.keyCode.ENTER,
                 altKey: true
             }));

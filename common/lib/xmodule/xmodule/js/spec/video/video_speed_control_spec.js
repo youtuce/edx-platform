@@ -38,19 +38,9 @@
                         expect($(link)).toHaveData(
                             'speed', state.speeds[index]
                         );
-                        expect($(link).find('a').text()).toBe(
+                        expect($(link).find('.speed-link').text()).toBe(
                             state.speeds[index] + 'x'
                         );
-                    });
-                });
-
-                it('add ARIA attributes to speed control', function () {
-                    var speedControl = $('div.speeds>a');
-
-                    expect(speedControl).toHaveAttrs({
-                        'role': 'button',
-                        'title': 'Speeds',
-                        'aria-disabled': 'false'
                     });
                 });
             });
@@ -61,7 +51,7 @@
                         window.onTouchBasedDevice.andReturn([device]);
                         state = jasmine.initializePlayer();
 
-                        expect(state.el.find('div.speeds')).not.toExist();
+                        expect(state.el.find('.speeds')).not.toExist();
                     });
                 });
             });
@@ -95,7 +85,7 @@
                     speedControl = $('.speeds');
                     speedButton = $('.speed-button');
                     speedsContainer = $('.video-speeds');
-                    speedEntries = speedsContainer.find('a');
+                    speedEntries = speedsContainer.find('.speed-link');
                 });
 
                 it('open/close the speed menu on mouseenter/mouseleave',
@@ -226,7 +216,7 @@
                 it('trigger speedChange event', function () {
                     spyOnEvent(state.el, 'speedchange');
 
-                    $('li[data-speed="0.75"] a').click();
+                    $('li[data-speed="0.75"] .speed-link').click();
                     expect('speedchange').toHaveBeenTriggeredOn(state.el);
                     expect(state.videoSpeedControl.currentSpeed).toEqual('0.75');
                 });

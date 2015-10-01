@@ -348,12 +348,11 @@ html:not('.afontgarde') .icon-fallback-img {
 
         .ui-corner-all.slider-range {
           background-color: #1e91d3; // Not sure what this is for.
-          opacity: 0.3;
         }
 
         .ui-slider-handle {
           @extend %ui-fake-link;
-          @include transform(scale(.7, 1.3) translate3d(-80%, -15%, 0));
+          @include transform(scale(.7, 1.3) translate3d(-65%, -15%, 0));
           top: 0;
           height: $baseline;
           width: $baseline;
@@ -425,12 +424,10 @@ html:not('.afontgarde') .icon-fallback-img {
         @include float(right);
 
         .speed-button,
-        .volume > a,
+        .volume > .control,
         .add-fullscreen,
         .quality-control,
         .hide-subtitles {
-          // overflow is used to bypass Firefox CSS :focus outline bug
-          // http://johndoesdesign.com/blog/2012/css/firefox-and-its-css-focus-outline-bug/
 
           &:focus {
             @extend %ui-depth5;
@@ -442,37 +439,37 @@ html:not('.afontgarde') .icon-fallback-img {
           float: left;
           position: relative;
 
-          &.is-opened {
-
-            .menu {
-              display: block;
-              margin: 0;
-              padding: 0;
-              list-style: none;
-              opacity: 1;
-            }
-          }
-
           .menu {
             @include transition(none);
             @extend %ui-depth1;
-            display: none;
             position: absolute;
-            bottom: 46px;
-            box-shadow: inset 1px 0 0 #555, 0 1px 0 #444;
+            display: none;
+            bottom: ($baseline * 1.5) + 4; // 34px to make it flush, meh
+            width: ($baseline * 6); // 120px
+            margin: 0;
+            padding: 0;
+            border: none;
+            box-shadow: none;
             background-color: rgb(40, 44, 46); // UXPL grayscale-cool x-dark
-            opacity: 0;
+            list-style: none;
 
             li {
               @extend %ui-fake-link;
               color: rgb(231, 236, 238); // UXPL grayscale-cool x-light
 
-              a {
+              .speed-link,
+              .control-lang {
+                @include text-align(left);
                 display: block;
+                width: 100%;
                 padding: lh(0.5);
                 border: 0;
+                border-radius: 0;
+                background: rgb(40, 44, 46); // UXPL grayscale-cool x-dark
+                box-shadow: none;
                 color: rgb(231, 236, 238); // UXPL grayscale-cool x-light
                 overflow: hidden;
+                text-shadow: none;
                 text-overflow: ellipsis;
                 white-space: nowrap;
 
@@ -483,24 +480,33 @@ html:not('.afontgarde') .icon-fallback-img {
                 }
               }
 
-              &.is-active{
+              &.is-active {
 
-                a {
-                  font-weight: bold;
+                .speed-link,
+                .control-lang {
+                  color: rgb(14, 166, 236); // UXPL primary accent
                 }
               }
+            }
+          }
 
-              &:last-child {
-                box-shadow: none;
-                border-bottom: 0;
-                margin-top: 0;
-              }
+          &.is-opened {
+
+            .menu {
+              display: block;
             }
           }
         }
 
         .speeds {
-          display: inline-block;
+
+          .control {
+
+            .icon-fallback-img {
+              @include float(left);
+              @include transform-origin(center center);
+            }
+          }
 
           &.is-opened {
 
@@ -511,53 +517,17 @@ html:not('.afontgarde') .icon-fallback-img {
               }
             }
           }
+        }
 
-          .menu {
-            bottom: ($baseline * 1.5); // 30px
-            width: ($baseline * 6.5); // 130px
-            border: none;
-            box-shadow: none;
-
-            @media (max-width: 1120px) {
-              width: 80px;
-            }
-
-            li {
-
-              .speed-link {
-                @include text-align(left);
-                display: block;
-                width: 100%;
-                border-radius: 0;
-              }
-
-              &.is-active {
-
-                .speed-link {
-                  color: rgb(252, 252, 252); // UXPL grayscale white
-                }
-              }
-            }
-          }
+        .speeds,
+        .lang {
+          display: inline-block;
 
           .speed-button {
-            @include clearfix();
-            text-indent: 0;
-
-            .icon-fallback-img {
-              @include float(left);
-              @include transform-origin(center center);
-            }
-
-            @media (max-width: 1120px) {
-              min-width: 0;
-              width: 60px;
-            }
 
             .label {
-              @include float(left);
               @include padding(0 ($baseline / 2) 0 0);
-              font-weight: normal;
+              font-family: $body-font-family;
               color: rgb(231, 236, 238); // UXPL grayscale-cool x-light
 
               @media (max-width: 1120px) {
@@ -566,8 +536,6 @@ html:not('.afontgarde') .icon-fallback-img {
             }
 
             .value {
-              @include float(left);
-              margin-bottom: 0;
               @include padding(0, lh(0.5), 0, 0);
               color: rgb(231, 236, 238); // UXPL grayscale-cool x-light
               font-weight: bold;
@@ -589,16 +557,6 @@ html:not('.afontgarde') .icon-fallback-img {
               display: block;
               opacity: 1;
             }
-          }
-
-          &.is-muted {
-
-            & > a {
-            }
-          }
-
-          & > a {
-            @include clearfix();
           }
 
           &:not(:first-child) > a {
@@ -672,27 +630,20 @@ html:not('.afontgarde') .icon-fallback-img {
               color: rgb(14, 166, 236); // UXPL primary accent
             }
           }
-
-          .menu.langs-list {
-            right: -1px;
-            width: 150px;
-          }
         }
       }
     }
 
-    &:hover .video-controls {
+    &:hover {
 
-      ul,
-      div {
-        opacity: 1;
-      }
+      .video-controls {
 
-      .slider {
-        @include transform(scaleY(1) translate3d(0, 0, 0));
+        .slider {
+          @include transform(scaleY(1) translate3d(0, 0, 0));
 
-        .ui-slider-handle {
-          @include transform(scale(1) translate3d(-50%, -15%, 0));
+          .ui-slider-handle {
+            @include transform(scale(1) translate3d(-50%, -25%, 0));
+          }
         }
       }
     }

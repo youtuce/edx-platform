@@ -450,7 +450,7 @@ function (Sjson, AsyncProcess) {
 
             $.each(languages, function(code, label) {
                 var li = $('<li data-lang-code="' + code + '" />'),
-                    link = $('<button class="control-lang" href="javascript:void(0);">' + label + '</button>');
+                    link = $('<button class="control control-lang" href="javascript:void(0);">' + label + '</button>');
 
                 if (currentLang === code) {
                     li.addClass('is-active');

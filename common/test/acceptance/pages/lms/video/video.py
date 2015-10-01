@@ -32,12 +32,12 @@ CSS_CLASS_NAMES = {
     'captions': '.subtitles',
     'captions_text': '.subtitles > li',
     'error_message': '.video .video-player h3',
-    'video_container': 'div.video',
+    'video_container': '.video',
     'video_sources': '.video-player video source',
     'video_spinner': '.video-wrapper .spinner',
     'video_xmodule': '.xmodule_VideoModule',
     'video_init': '.is-initialized',
-    'video_time': 'div.vidtime',
+    'video_time': '.vidtime',
     'video_display_name': '.vert h2',
     'captions_lang_list': '.langs-list li',
     'video_speed': '.speeds .value',
@@ -45,8 +45,8 @@ CSS_CLASS_NAMES = {
 }
 
 VIDEO_MODES = {
-    'html5': 'div.video video',
-    'youtube': 'div.video iframe'
+    'html5': '.video video',
+    'youtube': '.video iframe'
 }
 
 VIDEO_MENUS = {
@@ -99,7 +99,7 @@ class VideoPage(PageObject):
             video_player_buttons.append('play')
 
         for button in video_player_buttons:
-            self.wait_for_element_visibility(VIDEO_BUTTONS[button], '{} button is visible'.format(button.title()))
+            self.wait_for_element_visibility(VIDEO_BUTTONS[button], '{} button is visible'.format(button))
 
         def _is_finished_loading():
             """
@@ -126,7 +126,7 @@ class VideoPage(PageObject):
 
         video_player_buttons = ['do_not_show_again', 'skip_bumper', 'volume']
         for button in video_player_buttons:
-            self.wait_for_element_visibility(VIDEO_BUTTONS[button], '{} button is visible'.format(button.title()))
+            self.wait_for_element_visibility(VIDEO_BUTTONS[button], '{} button is visible'.format(button))
 
     @property
     def is_poster_shown(self):
@@ -371,7 +371,7 @@ class VideoPage(PageObject):
         hover = ActionChains(self.browser).move_to_element(element_to_hover_over)
         hover.perform()
 
-        speed_selector = self.get_element_selector('li[data-speed="{speed}"] a'.format(speed=speed))
+        speed_selector = self.get_element_selector('li[data-speed="{speed}"] .control'.format(speed=speed))
         self.q(css=speed_selector).first.click()
 
     def click_player_button(self, button):

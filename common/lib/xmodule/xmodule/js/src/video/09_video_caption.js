@@ -39,9 +39,9 @@ function (Sjson, AsyncProcess) {
             '<div class="lang menu-container">',
                 '<button class="control hide-subtitles" aria-disabled="false" aria-pressed="true">',
                     '<span class="icon-fallback-img">',
-                        '<span class="icon fa fa-cc" aria-hidden="true"></span>',
+                        '<span class="icon fa fa-quote-left" aria-hidden="true"></span>',
                         '<span class="text control-text">',
-                            gettext('Turn off captions'),
+                            gettext('Turn off transcript'),
                         '</span>',
                     '</span>',
                 '</button>',
@@ -871,26 +871,31 @@ function (Sjson, AsyncProcess) {
             if (hide_captions) {
                 state.captionsHidden = true;
                 state.el.addClass('closed');
-                text = gettext('Turn on captions');
-                aria = 'false';
+                text = gettext('Turn on transcripts');
                 if (trigger_event) {
                     this.state.el.trigger('captions:hide');
                 }
+
+                hideSubtitlesEl
+                    .removeClass('is-active')
+                .attr('aria-pressed', 'false')
+                .find('.control-text')
+                    .text(gettext(text));
             } else {
                 state.captionsHidden = false;
                 state.el.removeClass('closed');
                 this.scrollCaption();
-                text = gettext('Turn off captions');
-                aria = 'true';
+                text = gettext('Turn off transcripts');
                 if (trigger_event) {
                     this.state.el.trigger('captions:show');
                 }
-            }
 
-            hideSubtitlesEl
-                .attr('aria-pressed', aria)
+                hideSubtitlesEl
+                    .addClass('is-active')
+                .attr('aria-pressed', 'true')
                 .find('.control-text')
                     .text(gettext(text));
+            }
 
             if (state.resizer) {
                 if (state.isFullScreen) {

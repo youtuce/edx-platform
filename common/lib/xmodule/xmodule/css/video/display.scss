@@ -40,8 +40,8 @@ html:not('.afontgarde') .icon-fallback-img {
     background: url('#{$static-path}/images/fontawesome/compress.svg') center center no-repeat;
   }
 
-  .fa-cc {
-    background: url('#{$static-path}/images/fontawesome/cc.svg') center center no-repeat;
+  .fa-quote-left {
+    background: url('#{$static-path}/images/fontawesome/quote-left.svg') center center no-repeat;
   }
 
   .fa-volume-up {
@@ -503,10 +503,18 @@ html:not('.afontgarde') .icon-fallback-img {
           display: inline-block;
 
           &.is-opened {
+
+            .control {
+
+              .icon {
+                @include transform(rotate(-90deg));
+              }
+            }
           }
 
           .menu {
             bottom: ($baseline * 1.5); // 30px
+            width: ($baseline * 6.5); // 130px
             border: none;
             box-shadow: none;
 
@@ -538,6 +546,7 @@ html:not('.afontgarde') .icon-fallback-img {
 
             .icon-fallback-img {
               @include float(left);
+              @include transform-origin(center center);
             }
 
             @media (max-width: 1120px) {
@@ -547,11 +556,8 @@ html:not('.afontgarde') .icon-fallback-img {
 
             .label {
               @include float(left);
-              font-size: em(14);
+              @include padding(0 ($baseline / 2) 0 0);
               font-weight: normal;
-              letter-spacing: 1px;
-              @include padding(0, lh(0.25), 0, lh(0.5));
-              text-transform: uppercase;
               color: rgb(231, 236, 238); // UXPL grayscale-cool x-light
 
               @media (max-width: 1120px) {
@@ -637,7 +643,7 @@ html:not('.afontgarde') .icon-fallback-img {
               }
 
               .ui-slider-range {
-                background: rgb(79, 89, 93); // UXPL grayscale-cool dark
+                background: rgb(142, 62, 99); // UXPL secondary dark
               }
             }
           }
@@ -662,8 +668,8 @@ html:not('.afontgarde') .icon-fallback-img {
           & > .hide-subtitles {
             @include transition(none);
 
-            &.off {
-              opacity: 0.7;
+            &.is-active {
+              color: rgb(14, 166, 236); // UXPL primary accent
             }
           }
 

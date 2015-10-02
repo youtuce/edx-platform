@@ -147,6 +147,7 @@ include_proctoring = settings.FEATURES.get('ENABLE_PROCTORED_EXAMS', False) and 
             // element to trigger a change event in case the value was edited, which in turn will trigger an AJAX
             // request to update the masquerading data.
             userNameElement.blur();
+            masquerade(selectElement.find('option:selected'));
             return false;
         }
         return true;

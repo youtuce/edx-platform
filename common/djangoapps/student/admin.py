@@ -141,7 +141,7 @@ class CourseEnrollmentAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         # The course_id, mode, and user fields should not be editable for an existing enrollment.
         if obj:
-            return self.readonly_fields + ('course_id', 'mode', 'user',)
+            return self.readonly_fields + ('course_id', 'user',)
         return self.readonly_fields
 
     class Meta(object):  # pylint: disable=missing-docstring

@@ -4,7 +4,9 @@ Views for the course_mode module
 
 import decimal
 from ipware.ip import get_ip
+from urlparse import urljoin
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
@@ -14,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from edxmako.shortcuts import render_to_response
+import waffle
 
 from course_modes.models import CourseMode
 from courseware.access import has_access
@@ -123,15 +126,22 @@ class ChooseModeView(View):
             "nav_hidden": True,
         }
         if "verified" in modes:
+            verified_mode = modes["verified"]
             context["suggested_prices"] = [
                 decimal.Decimal(x.strip())
-                for x in modes["verified"].suggested_prices.split(",")
+                for x in verified_mode.suggested_prices.split(",")
                 if x.strip()
             ]
-            context["currency"] = modes["verified"].currency.upper()
-            context["min_price"] = modes["verified"].min_price
-            context["verified_name"] = modes["verified"].name
-            context["verified_description"] = modes["verified"].description
+            context["currency"] = verified_mode.currency.upper()
+            context["min_price"] = verified_mode.min_price
+            context["verified_name"] = verified_mode.name
+            context["verified_description"] = verified_mode.description
+
+            if verified_mode.sku:
+                context["use_ecommerce_payment_flow"] = waffle.flag_is_active(request, 'use-ecommerce-payment-flow')
+                context["ecommerce_payment_page"] = urljoin(settings.ECOMMERCE_PUBLIC_URL_ROOT,
+                                                            settings.ECOMMERCE_COURSE_CHECKOUT_PATH)
+                context["sku"] = verified_mode.sku
 
         return render_to_response("course_modes/choose.html", context)
 

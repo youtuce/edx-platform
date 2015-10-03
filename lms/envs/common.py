@@ -2582,6 +2582,7 @@ ECOMMERCE_API_URL = None
 ECOMMERCE_API_SIGNING_KEY = None
 ECOMMERCE_API_TIMEOUT = 5
 ECOMMERCE_SERVICE_WORKER_USERNAME = 'ecommerce_worker'
+ECOMMERCE_COURSE_CHECKOUT_PATH = '/checkout/single-course/'
 
 # Reverification checkpoint name pattern
 CHECKPOINT_PATTERN = r'(?P<checkpoint_name>[^/]+)'

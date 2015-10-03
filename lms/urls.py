@@ -469,6 +469,7 @@ if settings.COURSEWARE_ENABLED:
             include('edxnotes.urls'), name="edxnotes_endpoints"),
 
         url(r'^api/branding/v1/', include('branding.api_urls')),
+        url(r'^api/verification/', include('verify_student.verification_api.urls', namespace='verification_api')),
     )
 
     if settings.FEATURES["ENABLE_TEAMS"]:

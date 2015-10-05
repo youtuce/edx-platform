@@ -656,6 +656,13 @@ class CreditProviderIntegrationApiTests(CreditApiTestBase):
         request = api.create_credit_request(self.course_key, self.PROVIDER_ID, self.USER_INFO['username'])
         self.assertEqual(request['parameters']['final_grade'], u'0.33333')
 
+    def test_create_credit_request_address_newlines(self):
+        """ Verify the address uses CRLF for newlines. """
+        # TODO Create a user with an address with only LF.
+        # TODO Run the code
+        # TODO Verify the address uses CRLF instead of just LF.
+        self.fail()
+
     def test_credit_request_disable_integration(self):
         CreditProvider.objects.all().update(enable_integration=False)
 

@@ -44,7 +44,7 @@ function() {
                     '">',
                     '<span class="icon-fallback-img">',
                         '<span class="icon fa fa-volume-up" aria-hidden="true"></span>',
-                        '<span class="text control-text">',
+                        '<span class="sr control-text">',
                             gettext('Volume'),
                         '</span>',
                     '</span>',
@@ -134,18 +134,17 @@ function() {
         /** Bind any necessary function callbacks to DOM events. */
         bindHandlers: function() {
             this.state.el.on({
-                'keydown': this.keyDownHandler,
                 'play.volume': _.once(this.updateVolumeSilently),
                 'volumechange': this.onVolumeChangeHandler
             });
-            this.el.on({
+            this.state.el.find('.volume').on({
                 'mouseenter': this.openMenu,
                 'mouseleave': this.closeMenu
             });
             this.button.on({
+                'keydown': this.keyDownHandler,
                 'click': false,
                 'mousedown': this.toggleMuteHandler,
-                'keydown': this.keyDownButtonHandler,
                 'focus': this.openMenu,
                 'blur': this.closeMenu
             });
@@ -315,6 +314,15 @@ function() {
                     }
 
                     this.decreaseVolume();
+                    return false;
+
+                case KEY.SPACE:
+                case KEY.ENTER:
+                    if (event.shiftKey) {
+                        return true;
+                    }
+
+                    this.toggleMute();
                     return false;
             }
 

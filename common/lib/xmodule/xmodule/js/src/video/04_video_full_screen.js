@@ -5,7 +5,7 @@ define('video/04_video_full_screen.js', [], function () {
         '<button class="control add-fullscreen" aria-disabled="false" aria-pressed="false">',
             '<span class="icon-fallback-img">',
                 '<span class="icon fa fa-arrows-alt" aria-hidden="true"></span>',
-                '<span class="text control-text">',
+                '<span class="sr control-text">',
                     gettext('Fill browser'),
                 '</span>',
             '</span>',

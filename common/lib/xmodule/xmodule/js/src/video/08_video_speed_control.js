@@ -33,7 +33,7 @@ function (Iterator) {
                 '<button class="control speed-button" aria-disabled="false">',
                     '<span class="icon-fallback-img">',
                         '<span class="icon fa fa-caret-right" aria-hidden="true"></span>',
-                        '<span class="text control-text">',
+                        '<span class="sr control-text">',
                             gettext('Speed'),
                         '</span>',
                     '</span>',

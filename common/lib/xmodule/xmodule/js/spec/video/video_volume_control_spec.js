@@ -3,6 +3,12 @@
 describe('VideoVolumeControl', function () {
     var state, oldOTBD, volumeControl;
 
+    var KEY = $.ui.keyCode,
+
+    keyPressEvent = function(key) {
+        return $.Event('keydown', { keyCode: key });
+    };
+
     beforeEach(function () {
         oldOTBD = window.onTouchBasedDevice;
         window.onTouchBasedDevice = jasmine.createSpy('onTouchBasedDevice')
@@ -63,7 +69,7 @@ describe('VideoVolumeControl', function () {
         });
 
         it('add ARIA attributes to volume control', function () {
-            var button = $('.volume > .control');
+            var button = $('.volume .control');
 
             expect(button).toHaveAttrs({
                 'aria-disabled': 'false'
@@ -71,7 +77,7 @@ describe('VideoVolumeControl', function () {
         });
 
         it('bind the volume control', function () {
-            var button = $('.volume > .control');
+            var button = $('.volume .control');
 
             expect(button).toHandle('keydown');
             expect(button).toHandle('mousedown');
@@ -183,16 +189,19 @@ describe('VideoVolumeControl', function () {
     });
 
     describe('increaseVolume', function () {
+
         beforeEach(function () {
             state = jasmine.initializePlayer();
             volumeControl = state.videoVolumeControl;
         });
 
         it('volume is increased correctly', function () {
+            var button = $('.volume .control');
             volumeControl.volume = 60;
-            state.el.trigger(jQuery.Event("keydown", {
-                keyCode: $.ui.keyCode.UP
-            }));
+
+            // adjust the volume
+            button.focus();
+            button.trigger(keyPressEvent(KEY.UP));  // Up
             expect(volumeControl.volume).toEqual(80);
         });
 
@@ -204,16 +213,19 @@ describe('VideoVolumeControl', function () {
     });
 
     describe('decreaseVolume', function () {
+
         beforeEach(function () {
             state = jasmine.initializePlayer();
             volumeControl = state.videoVolumeControl;
         });
 
         it('volume is decreased correctly', function () {
+            var button = $('.volume .control');
             volumeControl.volume = 60;
-            state.el.trigger(jQuery.Event("keydown", {
-                keyCode: $.ui.keyCode.DOWN
-            }));
+
+            // adjust the volume
+            button.focus();
+            button.trigger(keyPressEvent(KEY.DOWN));  // Down
             expect(volumeControl.volume).toEqual(40);
         });
 

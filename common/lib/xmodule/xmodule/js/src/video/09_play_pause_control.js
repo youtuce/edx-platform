@@ -28,7 +28,7 @@ define('video/09_play_pause_control.js', [], function() {
             '<button class="control video_control play" aria-disabled="false" aria-pressed="false">',
                 '<span class="icon-fallback-img">',
                     '<span class="icon fa fa-play" aria-hidden="true"></span>',
-                    '<span class="text control-text">',
+                    '<span class="sr control-text">',
                         gettext('Play'),
                     '</span>',
                 '</span>',

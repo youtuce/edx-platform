@@ -21,6 +21,7 @@ from xmodule.tests.test_import import DummySystem
 from xmodule.video_module.transcripts_utils import save_to_store, Transcript
 from xmodule.modulestore.inheritance import own_metadata
 from xmodule.contentstore.content import StaticContent
+from xmodule.exceptions import NotFoundError
 
 from edxval.api import (
     create_profile, create_video, get_video_info, ValCannotCreateError, ValVideoNotFoundError
@@ -904,6 +905,9 @@ class TestEditorSavedMethod(BaseTestXmodule):
         with open(file_path, "r") as myfile:
             save_to_store(myfile.read(), file_name, 'text/sjson', item.location)
         item.sub = "3_yD_cEKoCk"
+        # subs_video.srt.sjson does not exist before calling editor_saved function
+        with self.assertRaises(NotFoundError):
+            Transcript.get_asset(item.location, 'subs_video.srt.sjson')
         old_metadata = own_metadata(item)
         # calling editor_saved will generate new file subs_video.srt.sjson for html5_sources
         item.editor_saved(self.user, old_metadata, None)
@@ -931,8 +935,12 @@ class TestEditorSavedMethod(BaseTestXmodule):
             save_to_store(myfile.read(), file_name, 'text/sjson', item.location)
             save_to_store(myfile.read(), 'subs_video.srt.sjson', 'text/sjson', item.location)
         item.sub = "3_yD_cEKoCk"
+        # subs_3_yD_cEKoCk.srt.sjson and subs_video.srt.sjson already exist
+        self.assertIsInstance(Transcript.get_asset(item.location, 'subs_3_yD_cEKoCk.srt.sjson'), StaticContent)
+        self.assertIsInstance(Transcript.get_asset(item.location, 'subs_video.srt.sjson'), StaticContent)
         old_metadata = own_metadata(item)
         item.editor_saved(self.user, old_metadata, None)
+        # subs_3_yD_cEKoCk.srt.sjson and subs_video.srt.sjson exist after calling editor_saved function
         self.assertIsInstance(Transcript.get_asset(item.location, 'subs_3_yD_cEKoCk.srt.sjson'), StaticContent)
         self.assertIsInstance(Transcript.get_asset(item.location, 'subs_video.srt.sjson'), StaticContent)
 

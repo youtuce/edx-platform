@@ -311,7 +311,7 @@ html:not('.afontgarde') .icon-fallback-img {
 
         &:hover,
         &:focus {
-          color: rgb(252, 252, 252); // UXPL grayscale white
+          background: darken(rgb(40, 44, 46), 7%); // UXPL secondary
         }
 
         &:active,
@@ -405,7 +405,6 @@ html:not('.afontgarde') .icon-fallback-img {
         .video_control {
 
           &:focus {
-            @extend %ui-depth4;
             position: relative;
           }
 
@@ -446,7 +445,6 @@ html:not('.afontgarde') .icon-fallback-img {
         .toggle-transcript {
 
           &:focus {
-            @extend %ui-depth5;
             position: relative;
           }
         }

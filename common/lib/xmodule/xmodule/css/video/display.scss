@@ -247,6 +247,23 @@ html:not('.afontgarde') .icon-fallback-img {
       }
     }
 
+    .closed-captions {
+      display: none;
+      position: absolute;
+      width: 85%;
+      max-height: ($baseline * 3);
+      left: 5%;
+      bottom: 10%;
+      border-radius: ($baseline / 5);
+      padding: 8px ($baseline / 2);
+      background: rgba(0, 0, 0, .75);
+      color: $yellow;
+
+      &:hover {
+        cursor: move;
+      }
+    }
+
     .video-player {
       overflow: hidden;
       min-height: 300px;

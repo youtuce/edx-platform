@@ -27,11 +27,15 @@ function (Sjson, AsyncProcess) {
             'onContainerMouseEnter', 'onContainerMouseLeave', 'fetchCaption',
             'onResize', 'pause', 'play', 'onCaptionUpdate', 'onCaptionHandler', 'destroy',
             'handleKeypress', 'handleKeypressLink', 'openLanguageMenu', 'closeLanguageMenu',
-            'previousLanguageMenuItem', 'nextLanguageMenuItem'
+            'previousLanguageMenuItem', 'nextLanguageMenuItem', 'handleCaptionToggle',
+            'showClosedCaptions', 'hideClosedCaptions', 'updateCaptionText', 'toggleClosedCaptions',
+            'getCaptionText', 'listenForDragDrop'
         );
         this.state = state;
         this.state.videoCaption = this;
         this.renderElements();
+        this.getCaptionText();
+        this.listenForDragDrop();
 
         return $.Deferred().resolve().promise();
     };
@@ -39,6 +43,14 @@ function (Sjson, AsyncProcess) {
     VideoCaption.prototype = {
         langTemplate: [
             '<div class="grouped-controls">',
+                '<button class="control toggle-captions" aria-disabled="false" aria-pressed="false">',
+                    '<span class="icon-fallback-img">',
+                        '<span class="icon fa fa-cc" aria-hidden="true"></span>',
+                        '<span class="sr control-text">',
+                            gettext('Turn on closed captioning'),
+                        '</span>',
+                    '</span>',
+                '</button>',
                 '<button class="control toggle-transcript" aria-disabled="false" aria-pressed="true">',
                     '<span class="icon-fallback-img">',
                         '<span class="icon fa fa-quote-left" aria-hidden="true"></span>',
@@ -103,6 +115,8 @@ function (Sjson, AsyncProcess) {
             this.loaded = false;
             this.subtitlesEl = $(this.template);
             this.container = $(this.langTemplate);
+            this.captionControlEl = this.container.find('.toggle-captions');
+            this.captionDisplayEl = this.state.el.find('.closed-captions');
             this.transcriptControlEl = this.container.find('.toggle-transcript');
             this.languageChooserEl = this.container.find('.lang');
             this.menuChooserEl = this.languageChooserEl.parent();
@@ -125,6 +139,7 @@ function (Sjson, AsyncProcess) {
                     'keydown'
                 ].join(' ');
 
+            this.captionControlEl.on('click', this.toggleClosedCaptions);
             this.transcriptControlEl.on('click', this.toggle);
             this.subtitlesEl
                 .on({
@@ -144,6 +159,10 @@ function (Sjson, AsyncProcess) {
                 this.languageChooserEl.on({
                     keydown: this.handleKeypressLink
                 }, '.control-lang');
+
+                this.captionControlEl.on({
+                    keydown: this.handleCaptionToggle
+                }, '.toggle-captions');
 
                 this.container.on({
                     mouseenter: this.onContainerMouseEnter,
@@ -170,6 +189,18 @@ function (Sjson, AsyncProcess) {
 
         onCaptionUpdate: function (event, time) {
             this.updatePlayTime(time);
+        },
+
+        handleCaptionToggle: function(event) {
+            var KEY = $.ui.keyCode,
+                keyCode = event.keyCode;
+
+            switch(keyCode) {
+                case KEY.SPACE:
+                case KEY.ENTER:
+                    event.preventDefault();
+                    this.toggleClosedCaptions;
+            }
         },
 
         handleKeypressLink: function(event) {
@@ -1013,6 +1044,62 @@ function (Sjson, AsyncProcess) {
                 this.hideCaptions(false, true, true);
             } else {
                 this.hideCaptions(true, true, true);
+            }
+        },
+
+        toggleClosedCaptions: function(event) {
+            event.preventDefault();
+
+            if (this.state.el.hasClass('has-captions')) {
+                this.hideClosedCaptions();
+            } else {
+                this.showClosedCaptions();
+            }
+        },
+
+        showClosedCaptions: function() {
+            this.state.el.addClass('has-captions');
+            this.captionControlEl
+                .addClass('is-active')
+                .attr('aria-pressed', 'true')
+                .find('.control-text')
+                    .text(gettext('Hide closed captions'));
+
+            this.captionDisplayEl
+                .text(this.subtitlesEl.find('.current').text())
+                .show();
+        },
+
+        hideClosedCaptions: function() {
+            this.state.el.removeClass('has-captions');
+            this.captionControlEl
+                .removeClass('is-active')
+                .attr('aria-pressed', 'false')
+                .find('.control-text')
+                    .text(gettext('Turn on closed captioning'));
+
+            this.captionDisplayEl.hide();
+        },
+
+        getCaptionText: function() {
+            this.captionDisplayEl.text(this.subtitlesEl.find('.current').text());
+            this.updateCaptionText();
+            this.listenForDragDrop();
+        },
+
+        updateCaptionText: function() {
+            var self = this;
+
+            setTimeout(function() {
+                self.getCaptionText();
+            }, 500);
+        },
+
+        listenForDragDrop: function(draggie_status) {
+            var captions = document.querySelector('.closed-captions');
+
+            if (captions) {
+                draggie = new Draggabilly(captions, { containment: true })
             }
         },
 

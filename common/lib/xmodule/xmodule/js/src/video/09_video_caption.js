@@ -29,11 +29,12 @@ function (Sjson, AsyncProcess) {
             'handleKeypress', 'handleKeypressLink', 'openLanguageMenu', 'closeLanguageMenu',
             'previousLanguageMenuItem', 'nextLanguageMenuItem', 'handleCaptionToggle',
             'showClosedCaptions', 'hideClosedCaptions', 'updateCaptionText', 'toggleClosedCaptions',
-            'getCaptionText', 'listenForDragDrop'
+            'getCaptionText', 'listenForDragDrop', 'updateCaptioningCookie', 'handleCaptioningCookie'
         );
         this.state = state;
         this.state.videoCaption = this;
         this.renderElements();
+        this.handleCaptioningCookie();
         this.getCaptionText();
         this.listenForDragDrop();
 
@@ -1047,6 +1048,19 @@ function (Sjson, AsyncProcess) {
             }
         },
 
+        handleCaptioningCookie: function() {
+            if ($.cookie('show_closed_captions')) {
+                this.state.showClosedCaptions = true;
+                this.showClosedCaptions();
+
+                // keep it going until turned off
+                $.cookie('show_closed_captions', 'true', {
+                    expires: 3650,
+                    path: '/'
+                });
+            }
+        },
+
         toggleClosedCaptions: function(event) {
             event.preventDefault();
 
@@ -1068,6 +1082,9 @@ function (Sjson, AsyncProcess) {
             this.captionDisplayEl
                 .text(this.subtitlesEl.find('.current').text())
                 .show();
+
+            this.state.showClosedCaptions = true;
+            this.updateCaptioningCookie(true);
         },
 
         hideClosedCaptions: function() {
@@ -1079,6 +1096,9 @@ function (Sjson, AsyncProcess) {
                     .text(gettext('Turn on closed captioning'));
 
             this.captionDisplayEl.hide();
+
+            this.state.showClosedCaptions = false;
+            this.updateCaptioningCookie(false);
         },
 
         getCaptionText: function() {
@@ -1100,6 +1120,17 @@ function (Sjson, AsyncProcess) {
 
             if (captions) {
                 draggie = new Draggabilly(captions, { containment: true })
+            }
+        },
+
+        updateCaptioningCookie: function(method) {
+            if (method) {
+                $.cookie('show_closed_captions', 'true', {
+                    expires: 3650,
+                    path: '/'
+                });
+            } else {
+                $.cookie('show_closed_captions', '');
             }
         },
 

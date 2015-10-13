@@ -318,7 +318,7 @@ class VideoPage(PageObject):
         state = states[captions_new_state]
 
         # Make sure that the transcript button is there
-        EmptyPromise(lambda: self.is_button_shown('transcript'),
+        EmptyPromise(lambda: self.is_button_shown('transcript_button'),
                      "transcript button is shown").fulfill()
 
         # toggle captions visibility state if needed

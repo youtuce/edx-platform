@@ -9,7 +9,9 @@ function () {
         '<button class="control quality-control is-hidden" aria-disabled="false" aria-pressed="false">',
             '<span class="icon-fallback-img">',
                 '<span class="icon icon-hd" aria-hidden="true">',
-                    gettext('HD'), // until we get an HD icon we'll use text
+                    // Translator note:
+                    // HD here stands for High Definition, usually represented by the letters "HD"
+                    gettext('HD'),
                 '</span>',
                 '<span class="text control-text">',
                     gettext('HD off'),

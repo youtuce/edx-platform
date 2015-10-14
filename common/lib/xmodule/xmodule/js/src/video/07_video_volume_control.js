@@ -246,6 +246,18 @@ function() {
             var action = isMuted ? 'addClass' : 'removeClass';
 
             this.el[action]('is-muted');
+
+            if (isMuted) {
+                this.el
+                    .find('.control .icon')
+                        .removeClass('fa-volume-up')
+                        .addClass('fa-volume-off');
+            } else {
+                this.el
+                    .find('.control .icon')
+                        .removeClass('fa-volume-off')
+                        .addClass('fa-volume-up');
+            }
         },
 
         /** Toggles the state of the volume button. */

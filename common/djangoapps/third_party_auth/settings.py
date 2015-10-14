@@ -58,6 +58,9 @@ def apply_settings(django_settings):
     # Required so that we can use unmodified PSA OAuth2 backends:
     django_settings.SOCIAL_AUTH_STRATEGY = 'third_party_auth.strategy.ConfigurationModelStrategy'
 
+    # Django 1.8 transaction-compatible
+    django_settings.SOCIAL_AUTH_STORAGE = 'third_party_auth.storage.LatestDjangoStorage'
+
     # We let the user specify their email address during signup.
     django_settings.SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email']
 

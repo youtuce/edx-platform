@@ -31,6 +31,12 @@
             <a href="#" class="button new-button new-library-button"><i class="icon fa fa-plus icon-inline"></i>
             ${_("New Library")}</a>
           % endif
+
+          % for entity in entities:
+          <!-- TODO (RFL): Populate class dynamically by using entity name. -->
+          <a href="#" class="button new-button new-program-button"><i class="icon fa fa-plus icon-inline"></i>
+            ${entity.button_text}</a>
+          % endfor
         </li>
       </ul>
     </nav>
@@ -165,6 +171,11 @@
       </div>
       % endif
 
+      <!-- TODO (RFL): Populate create template dynamically from installed entities. -->
+      % for entity in entities:
+        ${entity.create_view}
+      % endfor
+
       <!-- STATE: processing courses -->
       %if allow_course_reruns and rerun_creator_status and len(in_process_course_actions) > 0:
       <div class="courses courses-processing">
@@ -271,10 +282,18 @@
       </div>
       %endif
 
-      %if libraries_enabled:
+      %if libraries_enabled or entities:
       <ul id="course-index-tabs">
         <li class="courses-tab active"><a>${_("Courses")}</a></li>
+
+        % if libraries_enabled:
         <li class="libraries-tab"><a>${_("Libraries")}</a></li>
+        % endif
+
+        % for entity in entities:
+        <!-- TODO (RFL): Populate class dynamically. -->
+        <li class="programs-tab"><a>${entity.tab_text}</a></li>
+        % endfor
       </ul>
       %endif
 
@@ -484,6 +503,11 @@
         % endif
       </div>
       %endif
+
+      <!-- TODO (RFL): Populate list template dynamically from installed entities. -->
+      % for entity in entities:
+        ${entity.list_view}
+      % endfor
 
     </article>
     <aside class="content-supplementary" role="complementary">

@@ -136,11 +136,18 @@ define(["domReady", "jquery", "underscore", "js/utils/cancel_on_escape", "js/vie
             CreateLibraryUtils.configureHandlers();
         };
 
+        var addNewProgram = function (e) {
+            e.preventDefault();
+            $('.new-program-button').addClass('is-disabled').attr('aria-disabled', true);
+            var $newLibrary = $('.wrapper-create-program').addClass('is-shown');
+        };
+
         var showTab = function(tab) {
           return function(e) {
             e.preventDefault();
             $('.courses-tab').toggleClass('active', tab === 'courses');
             $('.libraries-tab').toggleClass('active', tab === 'libraries');
+            $('.programs-tab').toggleClass('active', tab === 'programs');
             // Also toggle this course-related notice shown below the course tab, if it is present:
             $('.wrapper-creationrights').toggleClass('is-hidden', tab === 'libraries');
           };
@@ -149,12 +156,14 @@ define(["domReady", "jquery", "underscore", "js/utils/cancel_on_escape", "js/vie
         var onReady = function () {
             $('.new-course-button').bind('click', addNewCourse);
             $('.new-library-button').bind('click', addNewLibrary);
+            $('.new-program-button').bind('click', addNewProgram);
             $('.dismiss-button').bind('click', ViewUtils.deleteNotificationHandler(function () {
                 ViewUtils.reload();
             }));
             $('.action-reload').bind('click', ViewUtils.reload);
             $('#course-index-tabs .courses-tab').bind('click', showTab('courses'));
             $('#course-index-tabs .libraries-tab').bind('click', showTab('libraries'));
+            $('#course-index-tabs .programs-tab').bind('click', showTab('programs'));
         };
 
         domReady(onReady);

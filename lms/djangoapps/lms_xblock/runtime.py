@@ -5,11 +5,13 @@ Module implementing `xblock.runtime.Runtime` functionality for the LMS
 import re
 import xblock.reference.plugins
 
-from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from request_cache.middleware import RequestCache
+
 from lms.djangoapps.lms_xblock.models import XBlockAsidesConfig
 from openedx.core.djangoapps.user_api.course_tag import api as user_course_tag_api
+from openedx.core.lib.xblock_utils import xblock_local_resource_url
 from xmodule.modulestore.django import modulestore
 from xmodule.services import SettingsService
 from xmodule.library_tools import LibraryToolsService
@@ -119,11 +121,7 @@ class LmsHandlerUrls(object):
         """
         local_resource_url for Studio
         """
-        path = reverse('xblock_resource_url', kwargs={
-            'block_type': block.scope_ids.block_type,
-            'uri': uri,
-        })
-        return '//{}{}'.format(settings.SITE_NAME, path)
+        return xblock_local_resource_url(block, uri)
 
 
 class LmsPartitionService(PartitionService):

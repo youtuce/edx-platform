@@ -11,7 +11,7 @@ import json
 from collections import OrderedDict
 from functools import partial
 from static_replace import replace_static_urls
-from openedx.core.lib.xblock_utils import wrap_xblock, request_token
+from openedx.core.lib.xblock_utils import wrap_xblock, request_token, xblock_local_resource_url
 
 import dogstats_wrapper as dog_stats_api
 from django.conf import settings
@@ -50,7 +50,7 @@ from contentstore.views.helpers import is_unit, xblock_studio_url, xblock_primar
 from contentstore.views.preview import get_preview_fragment
 from edxmako.shortcuts import render_to_string
 from models.settings.course_grading import CourseGradingModel
-from cms.lib.xblock.runtime import handler_url, local_resource_url
+from cms.lib.xblock.runtime import handler_url
 from opaque_keys.edx.keys import CourseKey
 from opaque_keys.edx.locator import LibraryUsageLocator
 from cms.lib.xblock.authoring_mixin import VISIBILITY_VIEW
@@ -71,7 +71,7 @@ ALWAYS = lambda x: True
 # monkey-patch the x_module library.
 # TODO: Remove this code when Runtimes are no longer created by modulestores
 xmodule.x_module.descriptor_global_handler_url = handler_url
-xmodule.x_module.descriptor_global_local_resource_url = local_resource_url
+xmodule.x_module.descriptor_global_local_resource_url = xblock_local_resource_url
 
 
 def hash_resource(resource):

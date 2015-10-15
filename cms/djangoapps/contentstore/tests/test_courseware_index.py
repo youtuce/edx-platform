@@ -335,11 +335,11 @@ class TestCoursewareSearchIndexer(MixedWithOptionsTestCase):
         response = self.search()
         self.assertEqual(response["total"], 5)
 
-    def _test_delete_course_from_search_index_after_course_deletion(self, store): # pylint: disable=invalid-name
+    def _test_delete_course_from_search_index_after_course_deletion(self, store):  # pylint: disable=invalid-name
         """
         Test that course will also be delete from search_index after course deletion.
         """
-        self.DOCUMENT_TYPE = 'course_info' # pylint: disable=invalid-name
+        self.DOCUMENT_TYPE = 'course_info'  # pylint: disable=invalid-name
         response = self.search()
         self.assertEqual(response["total"], 0)
 

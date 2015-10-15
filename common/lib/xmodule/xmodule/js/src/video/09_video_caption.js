@@ -1079,9 +1079,15 @@ function (Sjson, AsyncProcess) {
                 .find('.control-text')
                     .text(gettext('Hide closed captions'));
 
-            this.captionDisplayEl
-                .text(this.subtitlesEl.find('.current').text())
-                .show();
+            if (this.subtitlesEl.find('.current').text()) {
+                this.captionDisplayEl
+                    .text(this.subtitlesEl.find('.current').text())
+                    .show();
+            } else {
+                this.captionDisplayEl
+                    .text(this.subtitlesEl.find('li').not('.spacing').text())
+                    .show();
+            }
 
             this.state.showClosedCaptions = true;
             this.updateCaptioningCookie(true);

@@ -209,9 +209,9 @@ class YouTubeVideoTest(VideoBaseTest):
         # Verify that video has rendered in "Youtube" mode
         self.assertTrue(self.video.is_video_rendered('youtube'))
 
-    def test_cc_button_wo_english_transcript(self):
+    def test_transcript_button_wo_english_transcript(self):
         """
-        Scenario: CC button works correctly w/o english transcript in Youtube mode
+        Scenario: Transcript button works correctly w/o english transcript in Youtube mode
         Given the course has a Video component in "Youtube" mode
         And I have defined a non-english transcript for the video
         And I have uploaded a non-english transcript file to assets
@@ -223,13 +223,28 @@ class YouTubeVideoTest(VideoBaseTest):
         self.navigate_to_video()
         self.video.show_captions()
 
-        # Verify that we see "好 各位同学" text in the captions
+        # Verify that we see "好 各位同学" text in the transcript
         unicode_text = "好 各位同学".decode('utf-8')
         self.assertIn(unicode_text, self.video.captions_text)
 
-    def test_cc_button_transcripts_and_sub_fields_empty(self):
+    def test_cc_button(self):
         """
-        Scenario: CC button works correctly if transcripts and sub fields are empty,
+        Scenario: CC button works correctly with transcript in YouTube move
+        Given the course has a vieo component in "Youtube" mode
+        And I have defined a transcript for the video
+        Then I see the closed captioning element over the video
+        """
+        data = {'transcripts': {'zh': 'chinese_transcripts.srt'}}
+        self.metadata = self.metadata_for_mode('youtube', data)
+        self.assets.append('chinese_transcripts.srt')
+        self.navigate_to_video()
+        self.video.show_closed_captions()
+
+        self.assertTrue(self.video.is_closed_captions_visible)
+
+    def test_transcript_button_transcripts_and_sub_fields_empty(self):
+        """
+        Scenario: Transcript button works correctly if transcripts and sub fields are empty,
             but transcript file exists in assets (Youtube mode of Video component)
         Given the course has a Video component in "Youtube" mode
         And I have uploaded a .srt.sjson file to assets
@@ -244,11 +259,11 @@ class YouTubeVideoTest(VideoBaseTest):
         # Verify that we see "Welcome to edX." text in the captions
         self.assertIn('Welcome to edX.', self.video.captions_text)
 
-    def test_cc_button_hidden_no_translations(self):
+    def test_transcript_button_hidden_no_translations(self):
         """
-        Scenario: CC button is hidden if no translations
+        Scenario: Transcript button is hidden if no translations
         Given the course has a Video component in "Youtube" mode
-        Then the "CC" button is hidden
+        Then the "Transcript" button is hidden
         """
         self.navigate_to_video()
         self.assertFalse(self.video.is_button_shown('transcript'))

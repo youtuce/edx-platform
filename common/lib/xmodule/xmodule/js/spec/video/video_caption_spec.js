@@ -48,6 +48,20 @@
                     });
                 });
 
+                it('adds the captioning control to the video player', function() {
+                    state = jasmine.initializePlayer();
+                    expect($('.video')).toContain('.toggle-captions');
+                });
+
+                it('adds ARIA attributes to the captioning control', function() {
+                    state = jasmine.initializePlayer();
+                    var captionControl = $('.toggle-captions');
+                    expect(captionControl).toHaveAttrs({
+                        'aria-disabled': 'false',
+                        'aria-pressed': 'false'
+                    });
+                });
+
                 it('fetch the transcript in HTML5 mode', function () {
                     runs(function () {
                         state = jasmine.initializePlayer();
@@ -155,6 +169,54 @@
                     'pause': plugin.pause,
                     'play': plugin.play,
                     'destroy': plugin.destroy
+                });
+            });
+
+            describe('renderCaptions', function() {
+
+                describe('is rendered', function() {
+                    var KEY = $.ui.keyCode,
+
+                        keyPressEvent = function(key) {
+                            return $.Event('keydown', { keyCode: key });
+                        };
+
+                    it('toggle the captions on control click', function() {
+                        state = jasmine.initializePlayer();
+
+                        $('.toggle-captions').click();
+                        expect($('.closed-captions')).not.toBeHidden();
+                        $('.toggle-captions').click();
+                        expect($('.closed-captions')).toBeHidden();
+                    });
+
+                    it('toggles the captions on keypress ENTER', function() {
+                        state = jasmine.initializePlayer();
+
+                        $('.toggle-captions').focus();
+                        $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
+                        expect($('.toggle-captions')).toHaveClass('is-active');
+                        expect($('.closed-captions').not.toBeHidden();
+
+                        $('.toggle-captions').focus();
+                        $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
+                        expect($('.toggle-captions')).not.toHaveClass('is-active');
+                        expect($('.closed-captions').toBeHidden();
+                    });
+
+                    it('toggles the captions on keypress SPACE', function() {
+                        state = jasmine.initializePlayer();
+
+                        $('.toggle-captions').focus();
+                        $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
+                        expect($('.toggle-captions')).toHaveClass('is-active');
+                        expect($('.closed-captions').not.toBeHidden();
+
+                        $('.toggle-captions').focus();
+                        $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
+                        expect($('.toggle-captions')).not.toHaveClass('is-active');
+                        expect($('.closed-captions').toBeHidden();
+                    });
                 });
             });
 

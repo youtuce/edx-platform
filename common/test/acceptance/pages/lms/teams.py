@@ -225,6 +225,11 @@ class BaseTeamsPage(CoursePage, PaginatedUIMixin, TeamCardsMixin, BreadcrumbsMix
         return self.q(css=TEAMS_HEADER_CSS + ' .page-title')[0].text
 
     @property
+    def header_description_visible(self):
+        """Get whether the topic description is visible"""
+        return self.q(css=TEAMS_HEADER_CSS + ' .page-description').visible
+
+    @property
     def header_description(self):
         """Get the topic description displayed by the page header"""
         return self.q(css=TEAMS_HEADER_CSS + ' .page-description')[0].text
@@ -286,7 +291,7 @@ class BaseTeamsPage(CoursePage, PaginatedUIMixin, TeamCardsMixin, BreadcrumbsMix
         self.q(css='.search-field').first.fill(string)
         self.q(css='.action-search').first.click()
         self.wait_for(
-            lambda: self._showing_search_results,
+            lambda: self.header_description_visible and self._showing_search_results,
             description="Showing search results"
         )
         page = SearchTeamsPage(self.browser, self.course_id, self.topic)

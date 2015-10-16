@@ -845,6 +845,7 @@ class BrowseTeamsWithinTopicTest(TeamsTabBase):
             }
         }]
         with self.assert_events_match_during(self.only_team_events, expected_events=events, in_order=False):
+            #from nose.tools import set_trace; set_trace()
             search_results_page = self.browse_teams_page.search(search_text)
         self.verify_search_header(search_results_page, search_text)
         self.assertTrue(search_results_page.get_pagination_header_text().startswith('Showing 0 out of 0 total'))

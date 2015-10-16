@@ -10,4 +10,12 @@ class OptimizedCachedRequireJsStorage(OptimizedFilesMixin, PipelineCachedStorage
     """
     Custom storage backend that is used by Django-require.
     """
-    pass
+    def hashed_name(self, name, content=None):
+        """
+        Returns the MD5 hashed version of a file name.
+        """
+        try:
+            return super(OptimizedCachedRequireJsStorage, self).hashed_name(name, content)
+        except ValueError:
+            # Return the original name rather than aborting collectstatic
+            return name

@@ -18,7 +18,7 @@ except ImportError:
 
 __test__ = False  # do not collect
 
-DEFAULT_NUM_PROCESSORS = 1
+DEFAULT_NUM_PROCESSES = 1
 DEFAULT_VERBOSITY = 2
 
 
@@ -35,8 +35,9 @@ class BokChoyTestSuite(TestSuite):
       testsonly - assume servers are running (as per above) and run tests with no setup or cleaning of environment
       test_spec - when set, specifies test files, classes, cases, etc. See platform doc.
       default_store - modulestore to use when running tests (split or draft)
-      num_processors - number of processors or threads to use in tests. See nosetest
-        documentation: http://nose.readthedocs.org/en/latest/usage.html
+      num_processes - number of processes or threads to use in tests. Recommendation is that this
+      is equal to the number of available processors.
+      See nosetest documentation: http://nose.readthedocs.org/en/latest/usage.html
     """
     def __init__(self, *args, **kwargs):
         super(BokChoyTestSuite, self).__init__(*args, **kwargs)
@@ -51,7 +52,7 @@ class BokChoyTestSuite(TestSuite):
         self.test_spec = kwargs.get('test_spec', None)
         self.default_store = kwargs.get('default_store', None)
         self.verbosity = kwargs.get('verbosity', DEFAULT_VERBOSITY)
-        self.num_processors = kwargs.get('num_processors', DEFAULT_NUM_PROCESSORS)
+        self.num_processes = kwargs.get('num_processes', DEFAULT_NUM_PROCESSES)
         self.extra_args = kwargs.get('extra_args', '')
         self.har_dir = self.log_dir / 'hars'
         self.imports_dir = kwargs.get('imports_dir', None)
@@ -101,22 +102,22 @@ class BokChoyTestSuite(TestSuite):
         sh("./manage.py lms --settings bok_choy flush --traceback --noinput")
         bokchoy_utils.clear_mongo()
 
-    def verbosity_processor_string(self):
+    def verbosity_processes_string(self):
         """
         Multiprocessing, xunit, color, and verbosity do not work well together. We need to construct
         the proper combination for use with nosetests.
         """
         substring = []
 
-        if self.verbosity != DEFAULT_VERBOSITY and self.num_processors != DEFAULT_NUM_PROCESSORS:
+        if self.verbosity != DEFAULT_VERBOSITY and self.num_processes != DEFAULT_NUM_PROCESSES:
             msg = 'Cannot pass in both num_processors and verbosity. Quitting'
             raise BuildFailure(msg)
 
-        if self.num_processors != 1:
+        if self.num_processes != 1:
             # Construct "multiprocess" nosetest substring
             substring = [
                 "--with-xunitmp --xunitmp-file={}".format(self.xunit_report),
-                "--processes={}".format(self.num_processors),
+                "--processes={}".format(self.num_processes),
                 "--no-color --process-timeout=1200"
             ]
 
@@ -206,7 +207,7 @@ class BokChoyTestSuite(TestSuite):
             "SELENIUM_DRIVER_LOG_DIR='{}'".format(self.log_dir),
             "nosetests",
             test_spec,
-            "{}".format(self.verbosity_processor_string())
+            "{}".format(self.verbosity_processes_string())
         ]
         if self.pdb:
             cmd.append("--pdb")

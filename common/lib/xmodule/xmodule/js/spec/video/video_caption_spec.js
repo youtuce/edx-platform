@@ -196,12 +196,12 @@
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
                         expect($('.toggle-captions')).toHaveClass('is-active');
-                        expect($('.closed-captions').not.toBeHidden();
+                        expect($('.closed-captions')).not.toBeHidden();
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
                         expect($('.toggle-captions')).not.toHaveClass('is-active');
-                        expect($('.closed-captions').toBeHidden();
+                        expect($('.closed-captions')).toBeHidden();
                     });
 
                     it('toggles the captions on keypress SPACE', function() {
@@ -210,12 +210,12 @@
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
                         expect($('.toggle-captions')).toHaveClass('is-active');
-                        expect($('.closed-captions').not.toBeHidden();
+                        expect($('.closed-captions')).not.toBeHidden();
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
                         expect($('.toggle-captions')).not.toHaveClass('is-active');
-                        expect($('.closed-captions').toBeHidden();
+                        expect($('.closed-captions')).toBeHidden();
                     });
                 });
             });

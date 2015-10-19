@@ -1113,7 +1113,6 @@ function (Sjson, AsyncProcess, Draggabilly) {
         getCaptionText: function() {
             this.captionDisplayEl.text(this.subtitlesEl.find('.current').text());
             this.updateCaptionText();
-            this.listenForDragDrop();
         },
 
         updateCaptionText: function() {

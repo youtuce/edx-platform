@@ -57,8 +57,7 @@
                     state = jasmine.initializePlayer();
                     var captionControl = $('.toggle-captions');
                     expect(captionControl).toHaveAttrs({
-                        'aria-disabled': 'false',
-                        'aria-pressed': 'false'
+                        'aria-pressed': 'true'
                     });
                 });
 
@@ -185,9 +184,9 @@
                         state = jasmine.initializePlayer();
 
                         $('.toggle-captions').click();
-                        expect($('.closed-captions')).not.toBeHidden();
-                        $('.toggle-captions').click();
                         expect($('.closed-captions')).toBeHidden();
+                        $('.toggle-captions').click();
+                        expect($('.closed-captions')).not.toBeHidden();
                     });
 
                     it('toggles the captions on keypress ENTER', function() {
@@ -195,13 +194,13 @@
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
-                        expect($('.toggle-captions')).toHaveClass('is-active');
-                        expect($('.closed-captions')).not.toBeHidden();
+                        expect($('.toggle-captions')).not.toHaveClass('is-active');
+                        expect($('.closed-captions')).toBeHidden();
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.ENTER));
-                        expect($('.toggle-captions')).not.toHaveClass('is-active');
-                        expect($('.closed-captions')).toBeHidden();
+                        expect($('.toggle-captions')).toHaveClass('is-active');
+                        expect($('.closed-captions')).not.toBeHidden();
                     });
 
                     it('toggles the captions on keypress SPACE', function() {
@@ -209,13 +208,13 @@
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
-                        expect($('.toggle-captions')).toHaveClass('is-active');
-                        expect($('.closed-captions')).not.toBeHidden();
+                        expect($('.toggle-captions')).not.toHaveClass('is-active');
+                        expect($('.closed-captions')).toBeHidden();
 
                         $('.toggle-captions').focus();
                         $('.toggle-captions').trigger(keyPressEvent(KEY.SPACE));
-                        expect($('.toggle-captions')).not.toHaveClass('is-active');
-                        expect($('.closed-captions')).toBeHidden();
+                        expect($('.toggle-captions')).toHaveClass('is-active');
+                        expect($('.closed-captions')).not.toBeHidden();
                     });
                 });
             });

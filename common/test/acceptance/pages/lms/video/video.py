@@ -29,7 +29,7 @@ VIDEO_BUTTONS = {
 }
 
 CSS_CLASS_NAMES = {
-    'closed_captions': '.video.closed',
+    'captions_closed': '.video.closed',
     'captions_rendered': '.video.is-captions-rendered',
     'captions': '.subtitles',
     'captions_text': '.subtitles > li',
@@ -369,7 +369,7 @@ class VideoPage(PageObject):
         self.click_player_button('cc_button')
 
         # Make sure that the captions are visible
-        EmptyPromise(lambda: self.is_closed_captions_visible(),
+        EmptyPromise(self.is_closed_captions_visible,
                      "closed captions are {state}".format(state=state)).fulfill()
 
     @property
@@ -399,7 +399,7 @@ class VideoPage(PageObject):
         """
         self.wait_for_closed_captions()
 
-        closed_captions_selector = self.get_element_selector(CSS_CLASS_NAMES['closed_captions'])
+        closed_captions_selector = self.get_element_selector(CSS_CLASS_NAMES['captions_closed'])
         subs = self.q(css=closed_captions_selector).html
 
         return ' '.join(subs)

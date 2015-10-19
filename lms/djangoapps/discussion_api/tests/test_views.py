@@ -24,7 +24,7 @@ from discussion_api.tests.utils import (
 from student.tests.factories import CourseEnrollmentFactory, UserFactory
 from util.testing import UrlResetMixin
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
-from xmodule.modulestore.tests.factories import CourseFactory
+from xmodule.modulestore.tests.factories import CourseFactory, check_mongo_calls
 
 
 class DiscussionAPIViewTestMixin(CommentsServiceMockMixin, UrlResetMixin):
@@ -122,7 +122,8 @@ class CourseTopicsViewTest(DiscussionAPIViewTestMixin, ModuleStoreTestCase):
         )
 
     def test_get_success(self):
-        response = self.client.get(self.url)
+        with check_mongo_calls(2):
+            response = self.client.get(self.url)
         self.assert_response_correct(
             response,
             200,

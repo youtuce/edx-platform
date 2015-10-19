@@ -2,8 +2,8 @@
 // VideoCaption module.
 define(
 'video/09_video_caption.js',
-['video/00_sjson.js', 'video/00_async_process.js'],
-function (Sjson, AsyncProcess) {
+['video/00_sjson.js', 'video/00_async_process.js', 'draggabilly'],
+function (Sjson, AsyncProcess, Draggabilly) {
     /**
      * @desc VideoCaption module exports a function.
      *
@@ -1121,11 +1121,12 @@ function (Sjson, AsyncProcess) {
             }, 500);
         },
 
-        listenForDragDrop: function(draggie_status) {
-            var captions = document.querySelector('.closed-captions');
+        listenForDragDrop: function() {
+            var captions = document.querySelector('.closed-captions'),
+                draggable;
 
             if (captions) {
-                draggie = new Draggabilly(captions, { containment: true })
+                draggable = new Draggabilly(captions, { containment: true })
             }
         },
 

@@ -317,7 +317,7 @@ class VideoPage(PageObject):
         """
         self.wait_for_ajax()
         caption_state_selector = self.get_element_selector(CSS_CLASS_NAMES['captions'])
-        return not self.q(css=caption_state_selector).present
+        return self.q(css=caption_state_selector).visible
 
     def is_closed_captions_visible(self):
         """

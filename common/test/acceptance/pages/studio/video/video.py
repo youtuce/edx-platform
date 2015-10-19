@@ -13,11 +13,11 @@ from selenium.webdriver.common.keys import Keys
 
 
 CLASS_SELECTORS = {
-    'video_container': 'div.video',
+    'video_container': '.video',
     'video_init': '.is-initialized',
     'video_xmodule': '.xmodule_VideoModule',
     'video_spinner': '.video-wrapper .spinner',
-    'video_controls': 'section.video-controls',
+    'video_controls': '.video-controls',
     'attach_asset': '.upload-dialog > input[type="file"]',
     'upload_dialog': '.wrapper-modal-window-assetupload',
     'xblock': '.add-xblock-component',

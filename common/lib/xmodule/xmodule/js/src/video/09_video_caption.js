@@ -1128,8 +1128,10 @@ function (Sjson, AsyncProcess, Draggabilly) {
             var captions = document.querySelector('.closed-captions'),
                 draggable;
 
-            if (captions) {
+            if (typeof Draggabilly === "function" && captions) {
                 draggable = new Draggabilly(captions, { containment: true });
+            } else {
+                console.log('Closed captioning available but not draggable');
             }
         },
 

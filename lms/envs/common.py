@@ -2545,6 +2545,7 @@ ACCOUNT_VISIBILITY_CONFIGURATION = {
     "shareable_fields": [
         'username',
         'profile_image',
+        "account_privacy",
         'country',
         'time_zone',
         'language_proficiencies',
@@ -2555,6 +2556,7 @@ ACCOUNT_VISIBILITY_CONFIGURATION = {
     "public_fields": [
         'username',
         'profile_image',
+        "account_privacy",
     ],
 
     # The list of account fields that are visible only to staff and users viewing their own profiles
@@ -2574,7 +2576,6 @@ ACCOUNT_VISIBILITY_CONFIGURATION = {
         "level_of_education",
         "mailing_address",
         "requires_parental_consent",
-        "account_privacy",
     ]
 }
 

@@ -36,7 +36,7 @@ class BokChoyTestSuite(TestSuite):
       test_spec - when set, specifies test files, classes, cases, etc. See platform doc.
       default_store - modulestore to use when running tests (split or draft)
       num_processes - number of processes or threads to use in tests. Recommendation is that this
-      is equal to the number of available processors.
+      is less than or equal to the number of available processors.
       See nosetest documentation: http://nose.readthedocs.org/en/latest/usage.html
     """
     def __init__(self, *args, **kwargs):

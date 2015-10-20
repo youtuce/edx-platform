@@ -30,19 +30,21 @@ function (Iterator) {
     SpeedControl.prototype = {
         template: [
             '<div class="speeds menu-container">',
-                '<button class="control speed-button" aria-disabled="false">',
+                '<button class="control speed-button" aria-label="',
+                    gettext('Speed: Press UP to enter the speed menu then use the UP and DOWN arrow keys to navigate the different speeds. Press ENTER to change to the selected speed.'),
+                    '" aria-disabled="false" aria-expanded="false" role="application">',
                     '<span class="icon-fallback-img">',
                         '<span class="icon fa fa-caret-right" aria-hidden="true"></span>',
                         '<span class="sr control-text">',
                             gettext('Speed'),
                         '</span>',
                     '</span>',
-                    '<span class="label">',
+                    '<span class="label" aria-hidden="true">',
                         gettext('Speed'),
                     '</span>',
                     '<span class="value"></span>',
                 '</button>',
-              '<ol class="video-speeds menu" role="menu"></ol>',
+              '<ol class="video-speeds menu"></ol>',
             '</div>'
         ].join(''),
 
@@ -95,7 +97,7 @@ function (Iterator) {
                 reversedSpeeds = speeds.concat().reverse(),
                 speedsList = $.map(reversedSpeeds, function (speed) {
                     return [
-                        '<li data-speed="', speed, '" role="presentation">',
+                        '<li data-speed="', speed, '">',
                             '<button class="control speed-link" tabindex="-1">',
                                 speed, 'x',
                             '</button>',
@@ -176,7 +178,9 @@ function (Iterator) {
             }
 
             this.el.addClass('is-opened');
-            this.speedButton.attr('tabindex', -1);
+            this.speedButton
+                .attr('tabindex', -1)
+                .attr('aria-expanded', 'true');
         },
 
         /**
@@ -190,7 +194,9 @@ function (Iterator) {
             }
 
             this.el.removeClass('is-opened');
-            this.speedButton.attr('tabindex', 0);
+            this.speedButton
+                .attr('tabindex', 0)
+                .attr('aria-expanded', 'false');
         },
 
         /**

@@ -40,8 +40,8 @@ function() {
         template: [
             '<div class="volume">',
                 '<button class="control" aria-disabled="false" aria-label="',
-                    gettext('Click on this button to mute or unmute this video or press UP or DOWN buttons to increase or decrease volume level.'),
-                    '">',
+                    gettext('Volume: Click on this button to mute or unmute this video or press UP or DOWN buttons to increase or decrease volume level.'),
+                    '" role="application" aria-expanded="false">',
                     '<span class="icon-fallback-img">',
                         '<span class="icon fa fa-volume-up" aria-hidden="true"></span>',
                         '<span class="sr control-text">',
@@ -49,8 +49,13 @@ function() {
                         '</span>',
                     '</span>',
                 '</button>',
-                '<div role="presentation" class="volume-slider-container">',
-                    '<div class="volume-slider"></div>',
+                '<div class="volume-slider-container" role="application">',
+                    '<div class="volume-slider" ',
+                        'aria-orientation="verical" ',
+                        'aria-valuemin="0" ',
+                        'aria-valuemax="100" ',
+                        'aria-valuenow="" ',
+                        'step="20"></div>',
                 '</div>',
             '</div>'
         ].join(''),
@@ -199,6 +204,8 @@ function() {
             var volume = Math.min(this.getVolume() + this.step, this.max);
 
             this.setVolume(volume, false, false);
+            this.el.find('.volume-slider')
+                .attr('aria-valuenow', volume);
         },
 
         /** Decreases current volume level using previously defined step. */
@@ -206,11 +213,15 @@ function() {
             var volume = Math.max(this.getVolume() - this.step, this.min);
 
             this.setVolume(volume, false, false);
+            this.el.find('.volume-slider')
+                .attr('aria-valuenow', volume);
         },
 
         /** Updates volume slider view. */
         updateSliderView: function (volume) {
             this.volumeSlider.slider('value', volume);
+            this.el.find('.volume-slider')
+                .attr('aria-valuenow', volume);
         },
 
         /**
@@ -228,6 +239,8 @@ function() {
 
             volume = muteStatus ? 0 : this.storedVolume;
             this.setVolume(volume, false, false);
+            this.el.find('.volume-slider')
+                .attr('aria-valuenow', volume);
         },
 
         /**
@@ -283,11 +296,13 @@ function() {
         /** Opens volume menu. */
         openMenu: function() {
             this.el.addClass('is-opened');
+            this.button.attr('aria-expanded', 'true');
         },
 
         /** Closes speed menu. */
         closeMenu: function() {
             this.el.removeClass('is-opened');
+            this.button.attr('aria-expanded', 'false');
         },
 
         /**
@@ -359,7 +374,6 @@ function() {
                 case KEY.ENTER:
                 case KEY.SPACE:
                     this.toggleMute();
-
                     return false;
             }
 
@@ -373,6 +387,8 @@ function() {
          */
         onSlideHandler: function(event, ui) {
             this.setVolume(ui.value, false, true);
+            this.el.find('.volume-slider')
+                .attr('aria-valuenow', ui.volume);
         },
 
         /**
@@ -439,6 +455,9 @@ function() {
                 this.getVolumeDescription(volume),
                 this.i18n['Volume'] + '.'
             ].join(' '));
+
+            $(this.button).parent().find('.volume-slider')
+                .attr('aria-valuenow', volume);
         },
 
         /**

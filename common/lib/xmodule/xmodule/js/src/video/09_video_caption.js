@@ -22,7 +22,7 @@ function (Sjson, AsyncProcess) {
         if (!(this instanceof VideoCaption)) {
             return new VideoCaption(state);
         }
- 
+
         _.bindAll(this, 'toggle', 'onMouseEnter', 'onMouseLeave', 'onMovement',
             'onContainerMouseEnter', 'onContainerMouseLeave', 'fetchCaption',
             'onResize', 'pause', 'play', 'onCaptionUpdate', 'onCaptionHandler', 'destroy',
@@ -48,7 +48,9 @@ function (Sjson, AsyncProcess) {
                     '</span>',
                 '</button>',
                 '<div class="lang menu-container">',
-                    '<button class="control language-menu" aria-disabled="false" aria-pressed="false">',
+                    '<button class="control language-menu" aria-label="',
+                        gettext('Language: Press the UP arrow key to enter the language menu, then use UP and DOWN arrow keys to navigate language options. Press ENTER to change to the selected language.'),
+                        '" aria-disabled="false" aria-pressed="false" role="application">',
                         '<span class="icon-fallback-img">',
                             '<span class="icon fa fa-caret-left" aria-hidden="true"></span>',
                             '<span class="sr control-text">',
@@ -61,7 +63,7 @@ function (Sjson, AsyncProcess) {
         ].join(''),
 
         template: [
-            '<ol id="transcript-captions" class="subtitles" tabindex="0" role="group" aria-label="',
+            '<ol id="transcript-captions" class="subtitles" aria-label="',
                 gettext('Activating an item in this group will spool the video to the corresponding time point. To skip transcript, go to previous item.'),
                 '">',
                 '<li></li>',
@@ -654,6 +656,7 @@ function (Sjson, AsyncProcess) {
         buildCaptions: function  (container, start, captions) {
             var process = function(text, index) {
                     var liEl = $('<li>', {
+                        'role': 'link',
                         'data-index': index,
                         'data-start': start[index],
                         'tabindex': 0

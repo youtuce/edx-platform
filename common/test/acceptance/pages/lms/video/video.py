@@ -893,8 +893,8 @@ class VideoPage(PageObject):
         """
         Wait until closed captions are rendered completely.
         """
-        closed_captions_rendered_selector = self.get_element_selector(CSS_CLASS_NAMES['closed_captions'])
-        self.wait_for_element_presence(closed_captions_rendered_selector, 'Closed captions rendered')
+        cc_rendered_selector = self.get_element_selector(CSS_CLASS_NAMES['closed_captions'])
+        self.wait_for_element_presence(cc_rendered_selector, 'Closed captions rendered')
 
 
 def _parse_time_str(time_str):

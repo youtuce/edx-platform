@@ -79,11 +79,13 @@ function (Sjson, AsyncProcess, Draggabilly) {
         ].join(''),
 
         template: [
-            '<ol id="transcript-captions" class="subtitles" aria-label="',
+            '<div class="subtitles" role="region" aria-label="',
                 gettext('Activating an item in this group will spool the video to the corresponding time point. To skip transcript, go to previous item.'),
                 '">',
-                '<li></li>',
-            '</ol>'
+                '<ol id="transcript-captions" class="subtitles-menu">',
+                    '<li></li>',
+                '</ol>',
+            '</div>'
         ].join(''),
 
         destroy: function () {
@@ -118,6 +120,7 @@ function (Sjson, AsyncProcess, Draggabilly) {
 
             this.loaded = false;
             this.subtitlesEl = $(this.template);
+            this.subtitlesMenu = this.subtitlesEl.find('.subtitles-menu');
             this.container = $(this.langTemplate);
             this.captionControlEl = this.container.find('.toggle-captions');
             this.captionDisplayEl = this.state.el.find('.closed-captions');
@@ -145,7 +148,7 @@ function (Sjson, AsyncProcess, Draggabilly) {
 
             this.captionControlEl.on('click', this.toggleClosedCaptions);
             this.transcriptControlEl.on('click', this.toggle);
-            this.subtitlesEl
+            this.subtitlesMenu
                 .on({
                     mouseenter: this.onMouseEnter,
                     mouseleave: this.onMouseLeave,
@@ -187,7 +190,7 @@ function (Sjson, AsyncProcess, Draggabilly) {
                 });
 
             if ((state.videoType === 'html5') && (state.config.autohideHtml5)) {
-                this.subtitlesEl.on('scroll', state.videoControl.showControls);
+                this.subtitlesMenu.on('scroll', state.videoControl.showControls);
             }
         },
 
@@ -740,9 +743,9 @@ function (Sjson, AsyncProcess, Draggabilly) {
             };
 
             this.rendered = false;
-            this.subtitlesEl.empty();
+            this.subtitlesMenu.empty();
             this.setSubtitlesHeight();
-            this.buildCaptions(this.subtitlesEl, start, captions).done(onRender);
+            this.buildCaptions(this.subtitlesMenu, start, captions).done(onRender);
         },
 
         /**
@@ -752,7 +755,7 @@ function (Sjson, AsyncProcess, Draggabilly) {
         */
         addPaddings: function () {
 
-            this.subtitlesEl
+            this.subtitlesMenu
                 .prepend(
                     $('<li class="spacing">')
                         .height(this.topSpacingHeight())

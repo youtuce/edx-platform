@@ -145,7 +145,7 @@ def wrap_xblock(
 def replace_jump_to_id_urls(course_id, jump_to_id_base_url, block, view, frag, context):  # pylint: disable=unused-argument
     """
     This will replace a link between courseware in the format
-    /jump_to/<id> with a URL for a page that will correctly redirect
+    /jump_to_id/<id> with a URL for a page that will correctly redirect
     This is similar to replace_course_urls, but much more flexible and
     durable for Studio authored courses. See more comments in static_replace.replace_jump_to_urls
 

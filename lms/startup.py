@@ -43,15 +43,17 @@ def run():
         analytics.write_key = settings.LMS_SEGMENT_KEY
 
     # register any dependency injections that we need to support in edx_proctoring
-    # right now edx_proctoring is dependent on the openedx.core.djangoapps.credit
-    # as well as the instructor dashboard (for deleting student attempts)
+    # right now edx_proctoring is dependent on the openedx.core.djangoapps.credit,
+    # common.djangoapps.track (AnalyticsService) as well as the instructor dashboard (for deleting student attempts)
     if settings.FEATURES.get('ENABLE_PROCTORED_EXAMS'):
         # Import these here to avoid circular dependencies of the form:
         # edx-platform app --> DRF --> django translation --> edx-platform app
         from edx_proctoring.runtime import set_runtime_service
         from instructor.services import InstructorService
         from openedx.core.djangoapps.credit.services import CreditService
+        from track.service import AnalyticsService
         set_runtime_service('credit', CreditService())
+        set_runtime_service('analytics', AnalyticsService())
         set_runtime_service('instructor', InstructorService())
 
 

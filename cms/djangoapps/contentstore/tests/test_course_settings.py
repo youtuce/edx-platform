@@ -30,8 +30,8 @@ from contentstore.views.component import ADVANCED_COMPONENT_POLICY_KEY
 import ddt
 from xmodule.modulestore import ModuleStoreEnum
 
+from self_paced.models import SelfPacedConfiguration
 from util.milestones_helpers import seed_milestone_relationship_types
-
 
 def get_url(course_id, handler_name='settings_handler'):
     return reverse_course_url(handler_name, course_id)
@@ -135,8 +135,8 @@ class CourseDetailsTestCase(CourseTestCase):
             jsondetails.self_paced
         )
 
-    @override_settings(FEATURES=dict(settings.FEATURES, ENABLE_SELF_PACED_COURSES=False))
-    def test_enable_self_paced(self):
+    def test_self_paced_disabled(self):
+        SelfPacedConfiguration(enabled=False).save()
         details = CourseDetails.fetch(self.course.id)
         self.assertNotIn('self_paced', details.__dict__)
 

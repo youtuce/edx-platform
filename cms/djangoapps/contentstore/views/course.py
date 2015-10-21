@@ -84,6 +84,7 @@ from course_action_state.managers import CourseActionStateItemNotFoundError
 from microsite_configuration import microsite
 from xmodule.course_module import CourseFields
 from student.auth import has_course_author_access
+from self_paced.models import SelfPacedConfiguration
 
 from util.milestones_helpers import (
     set_prerequisite_courses,
@@ -913,6 +914,9 @@ def settings_handler(request, course_key_string):
             enrollment_end_editable = GlobalStaff().has_user(request.user) or not marketing_site_enabled
 
             short_description_editable = settings.FEATURES.get('EDITABLE_SHORT_DESCRIPTION', True)
+
+            self_paced_enabled = SelfPacedConfiguration.current().enabled
+
             settings_context = {
                 'context_course': course_module,
                 'course_locator': course_key,
@@ -928,6 +932,7 @@ def settings_handler(request, course_key_string):
                 'is_credit_course': False,
                 'show_min_grade_warning': False,
                 'enrollment_end_editable': enrollment_end_editable,
+                'self_paced_enabled': self_paced_enabled,
             }
             if prerequisite_course_enabled:
                 courses, in_process_course_actions = get_courses_accessible_to_user(request)

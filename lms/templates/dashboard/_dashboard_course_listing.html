@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from markupsafe import escape
 from courseware.courses import get_course_university_about_section
 from course_modes.models import CourseMode
+from certificates.models import CertificateStatuses
 from student.helpers import (
   VERIFY_STATUS_NEED_TO_VERIFY,
   VERIFY_STATUS_SUBMITTED,
@@ -19,6 +20,11 @@ from student.helpers import (
 %>
 
 <%
+  disable_unenroll_cert_states = [
+    CertificateStatuses.generating,
+    CertificateStatuses.regenerating,
+    CertificateStatuses.downloadable,
+  ]
   cert_name_short = course_overview.cert_name_short
   if cert_name_short == "":
     cert_name_short = settings.CERT_NAME_SHORT
@@ -171,7 +177,8 @@ from student.helpers import (
               </a>
               <div class="actions-dropdown" id="actions-dropdown-${dashboard_index}" aria-label="${_('Additional Actions Menu')}">
                 <ul class="actions-dropdown-list" id="actions-dropdown-list-${dashboard_index}" aria-label="${_('Available Actions')}" role="menu">
-                  <li class="actions-item" id="actions-item-unenroll-${dashboard_index}">
+                  % if cert_status.get('status') not in disable_unenroll_cert_states:
+                    <li class="actions-item" id="actions-item-unenroll-${dashboard_index}">
                     % if is_paid_course and show_refund_option:
                       ## Translators: The course name will be added to the end of this sentence.
                       % if not is_course_blocked:
@@ -255,6 +262,7 @@ from student.helpers import (
                       % endif
                     % endif
                   </li>
+                  % endif
                   <li class="actions-item" id="actions-item-email-settings-${dashboard_index}">
                     % if show_email_settings:
                       % if not is_course_blocked:

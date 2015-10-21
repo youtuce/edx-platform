@@ -1,12 +1,16 @@
 """
 Acceptance tests for Studio related to the asset index page.
 """
+
+from flaky import flaky
+
 from ...pages.studio.asset_index import AssetIndexPage
 
 from .base_studio_test import StudioCourseTest
 from ...fixtures.base import StudioApiLoginError
 
 
+@flaky(max_runs=20, min_passes=20)
 class AssetIndexTest(StudioCourseTest):
 
     """

@@ -264,7 +264,7 @@ class VideoComponentPage(VideoPage):
             line_number (int): caption line number
 
         """
-        caption_line_selector = ".subtitles > li[data-index='{index}']".format(index=line_number - 1)
+        caption_line_selector = ".subtitles li[data-index='{index}']".format(index=line_number - 1)
         self.q(css=caption_line_selector).results[0].send_keys(Keys.ENTER)
 
     def is_caption_line_focused(self, line_number):
@@ -275,7 +275,7 @@ class VideoComponentPage(VideoPage):
             line_number (int): caption line number
 
         """
-        caption_line_selector = ".subtitles > li[data-index='{index}']".format(index=line_number - 1)
+        caption_line_selector = ".subtitles li[data-index='{index}']".format(index=line_number - 1)
         attributes = self.q(css=caption_line_selector).attrs('class')
 
         return 'focused' in attributes
@@ -504,7 +504,7 @@ class VideoComponentPage(VideoPage):
         As all the captions lines are exactly same so only getting partial lines will work.
         """
         self.wait_for_captions()
-        selector = '.subtitles > li:nth-child({})'
+        selector = '.subtitles li:nth-child({})'
         return ' '.join([self.q(css=selector.format(i)).text[0] for i in range(1, 6)])
 
     def set_url_field(self, url, field_number):

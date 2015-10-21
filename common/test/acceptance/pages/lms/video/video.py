@@ -32,7 +32,7 @@ CSS_CLASS_NAMES = {
     'captions_closed': '.video.closed',
     'captions_rendered': '.video.is-captions-rendered',
     'captions': '.subtitles',
-    'captions_text': '.subtitles > li',
+    'captions_text': '.subtitles li',
     'closed_captions': '.closed-captions',
     'error_message': '.video .video-player h3',
     'video_container': '.video',

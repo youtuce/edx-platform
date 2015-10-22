@@ -17,7 +17,7 @@
             <td><%- cert.get("user_name") %></td>
             <td><%- cert.get("user_id") %></td>
             <td><%- cert.get("user_email") %></td>
-            <td><%- cert.get("modified") %></td>
+            <td><%- cert.get("created") %></td>
             <td><%- cert.get("free_text") %></td>
         </tr>
         <% } %>

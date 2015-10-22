@@ -18,7 +18,7 @@
                     user_id: '',
                     user_name: '',
                     user_email: '',
-                    modified: '',
+                    created: '',
                     free_text: ''
                 },
 

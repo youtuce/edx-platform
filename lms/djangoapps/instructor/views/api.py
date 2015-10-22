@@ -18,6 +18,7 @@ from django.views.decorators.cache import cache_control
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.core.mail.message import EmailMessage
 from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.utils.translation import ugettext as _
@@ -111,6 +112,8 @@ from opaque_keys.edx.keys import CourseKey, UsageKey
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 from opaque_keys import InvalidKeyError
 from openedx.core.djangoapps.course_groups.cohorts import is_course_cohorted
+
+from certificates.models import CertificateWhitelist
 
 log = logging.getLogger(__name__)
 
@@ -2695,15 +2698,69 @@ def add_students_to_certificate_white_list(request, course_id):
     try:
         certificate_white_list = json.loads(request.body)
     except ValueError:
-        return HttpResponseBadRequest("Invalid Json data")
+        return JsonResponse({
+            'success': False,
+            'message': _('Invalid Json data')
+        }, status=400)
+    try:
+        process_white_list_certificate_candidates(certificate_white_list, course_key)
+    except ValueError as error:
+        return JsonResponse(
+            {'success': False, 'message': _(error.message), 'data': json.dumps(certificate_white_list)},
+            status=400
+        )
 
-    for item in certificate_white_list:
-        user_name = item.get('user_name', '')
-
-    message = _('Certificate generation task for all students of this course has been started. '
-                'You can view the status of the generation task in the "Pending Tasks" section.')
+    message = _('Students added to Certificate whit liest successfully')
 
     response_payload = {
+        'success': True,
         'message': message,
+        'data': json.dumps(certificate_white_list)
     }
     return JsonResponse(response_payload)
+
+
+def process_white_list_certificate_candidates(data_list, course_key):
+    users = map(lambda data: data.get('user_name', False) or data.get('user_email', False), data_list)
+
+    if not all(users):
+        # Username and email can not both be empty
+        raise ValueError('Student username/email is required.')
+
+    if len(users) != len(set(users)):
+        # Duplicate Student username/email is not allowed
+        raise ValueError('Duplicate Student Username/password.')
+
+    for data in data_list:
+        user = data.get('user_name', '') or data.get('user_email', '')
+        try:
+            db_user = get_user(user)
+        except ObjectDoesNotExist:
+            raise ValueError('Student (username/email={user}) does not exists'.format(user=user))
+        except MultipleObjectsReturned:
+            raise ValueError('Multiple Students found with username/email={user}'.format(user=user))
+
+        if CertificateWhitelist.objects.filter(user=db_user, whitelist=True).count() > 0:
+            raise ValueError(
+                "Student (username/email={user_id} already in Certificate white list!)".format(user_id=user)
+            )
+
+        certificate_white_list = CertificateWhitelist.objects.create(
+            user=db_user,
+            course_id=course_key,
+            whitelist=True,
+            free_text=data.get('free_text', '')
+        )
+
+        data.update({
+            'id': certificate_white_list.id
+        })
+
+    return data_list
+
+
+def get_user(user_name):
+    if '@' in user_name:
+        return User.objects.get(email=user_name)
+    else:
+        return User.objects.get(username=user_name)

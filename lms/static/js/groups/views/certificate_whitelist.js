@@ -37,11 +37,21 @@
                 },
 
                 generateExceptionCertificates: function(){
-                    console.log(this.certificateWhiteList.toJSON());
                     this.certificateWhiteList.sync('create', this.certificateWhiteList.newCertificateWhitelist(), {
-                        success: function(){console.log("Collection updated on server.")},
-                        error: function(){console.log("Error while saving on server.")}
+                        success: this.showSuccess,
+                        error: this.showError
                     });
+                },
+
+                showSuccess: function(xhr, status, options){
+                    var response = JSON.parse(xhr. responseText);
+                    console.log(response.message);
+                },
+
+                showError: function(xhr, status, options){
+                    var response = JSON.parse(xhr. responseText);
+                    $(".error-message").text(response.message);
+                    console.log(response.message)
                 }
 
             });

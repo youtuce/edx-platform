@@ -59,6 +59,7 @@ from django.dispatch import receiver
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
+from django_extensions.db.fields import CreationDateTimeField
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 from xmodule.modulestore.django import modulestore
@@ -108,6 +109,8 @@ class CertificateWhitelist(models.Model):
     user = models.ForeignKey(User)
     course_id = CourseKeyField(max_length=255, blank=True, default=None)
     whitelist = models.BooleanField(default=0)
+    created = CreationDateTimeField(_('created'))
+    free_text = models.TextField(default='')
 
     @classmethod
     def certificate_white_list(cls, course_id):
@@ -122,7 +125,7 @@ class CertificateWhitelist(models.Model):
         }, {...}, ...]
 
         """
-        white_list = cls.objects.filter(course_id=course_id)
+        white_list = cls.objects.filter(course_id=course_id, whitelist=True)
         result = []
 
         for item in white_list:
@@ -132,6 +135,8 @@ class CertificateWhitelist(models.Model):
                 'user_name': unicode(item.user.username),
                 'user_email': unicode(item.user.email),
                 'course_id': unicode(item.course_id),
+                'created': unicode(item.created),
+                'free_text': unicode(item.free_text),
 
             })
         return result

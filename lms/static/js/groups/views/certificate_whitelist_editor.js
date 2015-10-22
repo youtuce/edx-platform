@@ -50,7 +50,7 @@
                         user_name: user_name,
                         user_email: user_email,
                         free_text: free_text,
-                        'modified': new Date()
+                        'created': new Date()
                     });
 
                     if(certificate_exception.isValid())

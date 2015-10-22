@@ -2,14 +2,14 @@
     <p><%- gettext("No results") %></p>
 <% } else { %>
     <table>
-        <tr>
+        <thead>
             <th><%- gettext("Name") %></th>
             <th><%- gettext("User ID") %></th>
             <th><%- gettext("User Email") %></th>
             <th><%- gettext("Date Exception Granted") %></th>
             <th><%- gettext("Free Text Notes") %></th>
-            <th></th>
-        </tr>
+        </thead>
+        <tbody>
         <% for (var i = 0; i < certificates.length; i++) {
             var cert = certificates[i];
         %>
@@ -21,6 +21,7 @@
             <td><%- cert.get("free_text") %></td>
         </tr>
         <% } %>
+        </tbody>
     </table>
 <% } %>
 

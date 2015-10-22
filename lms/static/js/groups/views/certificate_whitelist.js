@@ -44,14 +44,23 @@
                 },
 
                 showSuccess: function(xhr, status, options){
-                    var response = JSON.parse(xhr. responseText);
-                    console.log(response.message);
+                    var response = xhr;
+                    var $message_div = $(".error-message");
+                    $message_div.html('<div class="msg-success">*' + response.message + '</div>');
+
+                    $('html, body').animate({
+                        scrollTop: $message_div.offset().top
+                    }, 1000);
                 },
 
                 showError: function(xhr, status, options){
-                    var response = JSON.parse(xhr. responseText);
-                    $(".error-message").text(response.message);
-                    console.log(response.message)
+                    var response = JSON.parse(xhr.responseText);
+                    var $message_div = $(".error-message");
+                    $message_div.html('<div class="msg-error">*' + response.message + '</div>');
+
+                    $('html, body').animate({
+                        scrollTop: $message_div.offset().top
+                    }, 1000);
                 }
 
             });

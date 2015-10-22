@@ -34,6 +34,15 @@
                     this.toggleAddNewItemButtonState();
                 },
 
+                containsModel: function(attrs){
+                    if(attrs.user_name)
+                        return typeof this.findWhere({user_name: attrs.user_name}) !== 'undefined';
+                    else if(attrs.user_email)
+                        return typeof this.findWhere({user_email: attrs.user_email}) !== 'undefined';
+                    else
+                        return false
+                },
+
                 toggleAddNewItemButtonState: function() {
                     // user can create a new item e.g CertificateException; if not exceeded the maxAllowed limit.
                     if(this.length >= this.maxAllowed) {

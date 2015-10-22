@@ -53,7 +53,9 @@
                         'created': new Date()
                     });
 
-                    if(certificate_exception.isValid())
+                    if(this.certificateWhiteList.containsModel({user_name: user_name, user_email: user_email}))
+                        this.showErrorMessage("username/email already in excpetion list");
+                    else if(certificate_exception.isValid())
                         this.certificateWhiteList.add(certificate_exception, {validate: true});
                     else
                         this.showErrorMessage(certificate_exception.validationError);
@@ -65,7 +67,10 @@
                 },
 
                 showErrorMessage: function(message){
-                    $(this.error_div).append("<div class='error'>" + message + "</div>");
+                    $(this.error_div).html("<div class='msg-error'>*" + message + "</div>");
+                    $('html, body').animate({
+                        scrollTop: $(this.error_div).offset().top
+                    }, 1000);
                 }
 
             });

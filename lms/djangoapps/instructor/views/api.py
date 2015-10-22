@@ -2710,7 +2710,7 @@ def add_students_to_certificate_white_list(request, course_id):
             status=400
         )
 
-    message = _('Students added to Certificate whit liest successfully')
+    message = _('Students added to Certificate white list successfully')
 
     response_payload = {
         'success': True,

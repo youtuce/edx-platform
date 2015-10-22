@@ -172,19 +172,17 @@
 }
 
 .forum-nav-thread {
-  border-bottom: 1px solid $gray-l3;
-  background-color: $gray-l5;
-
-  &.is-unread {
-    background-color: $white;
-  }
+  border-bottom: 1px solid $gray-l4;
+  background-color: $gray-l6;
 }
 
 .forum-nav-thread-link {
   display: block;
   padding: ($baseline/4) ($baseline/2);
 
-  &.is-active, &:hover, &:focus {
+  &.is-active,
+  &:hover,
+  &:focus {
     background-color: $forum-color-active-thread;
   }
 }
@@ -289,11 +287,11 @@
 }
 
 .forum-nav-thread.is-unread .forum-nav-thread-comments-count {
-  background-color: $blue;
+  background-color: $blue-d1;
   color: $white;
 
   &:after {
-    border-right-color: $blue;
+    border-right-color: $blue-d1;
   }
 }
 

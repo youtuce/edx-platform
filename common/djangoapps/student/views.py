@@ -122,6 +122,7 @@ from notification_prefs.views import enable_notifications
 
 # Note that this lives in openedx, so this dependency should be refactored.
 from openedx.core.djangoapps.user_api.preferences import api as preferences_api
+from openedx.core.lib.programs import get_course_programs_for_dashboard
 
 
 log = logging.getLogger("edx.student")
@@ -571,6 +572,11 @@ def dashboard(request):
         if has_access(request.user, 'load', enrollment.course_overview)
         and has_access(request.user, 'view_courseware_with_prerequisites', enrollment.course_overview)
     )
+
+    # get the programs associated with courses being displayed.
+    # pass this along in template context in order to render additional
+    # program-related information on the dashboard view.
+    course_programs = get_course_programs_for_dashboard(request.user.username, show_courseware_links_for)
 
     # Construct a dictionary of course mode information
     # used to render the course list.  We re-use the course modes dict

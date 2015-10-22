@@ -7,6 +7,7 @@ from urllib import urlencode
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.test.utils import override_settings
 from opaque_keys.edx.locations import SlashSeparatedCourseKey
 
 from util.date_utils import strftime_localized
@@ -117,6 +118,7 @@ class CourseInfoTestCaseXML(LoginEnrollmentTestCase, ModuleStoreTestCase):
 
 
 @attr('shard_1')
+@override_settings(FEATURES=dict(settings.FEATURES, EMBARGO=False))
 class SelfPacedCourseInfoTestCase(LoginEnrollmentTestCase, SharedModuleStoreTestCase):
     """
     Tests for the info page of self-paced courses.
@@ -140,7 +142,7 @@ class SelfPacedCourseInfoTestCase(LoginEnrollmentTestCase, SharedModuleStoreTest
         self.assertEqual(resp.status_code, 200)
 
     def test_num_queries_instructor_led(self):
-        self.fetch_course_info_with_queries(self.instructor_led_course, 15, 4)
+        self.fetch_course_info_with_queries(self.instructor_led_course, 14, 4)
 
     def test_num_queries_self_paced(self):
         self.fetch_course_info_with_queries(self.self_paced_course, 14, 4)

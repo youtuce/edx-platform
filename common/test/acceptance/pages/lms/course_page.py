@@ -51,14 +51,14 @@ class CoursePage(PageObject):
             self.q(css=skip_href).is_present, "Main content area is present"
         ).fulfill()
 
-    def skip_to_main_content(self):
-        """
-        Checks to make sure the skip link skips to its href
-        and the container receives focus.
-        """
-        skip_to = self.q(css=".nav-skip").attrs('href')[0]
-        skip_href = skip_to.split('/')[-1]
-        self.q(css=skip_href).click
-        self.wait_for(
-            self.q(css=skip_href).is_focused, "Main content area is focusable'"
-        )
+    # def skip_to_main_content(self):
+    #     """
+    #     Checks to make sure the skip link skips to its href
+    #     and the container receives focus.
+    #     """
+    #     skip_to = self.q(css=".nav-skip").attrs('href')[0]
+    #     skip_href = skip_to.split('/')[-1]
+    #     self.q(css=skip_href).click
+    #     self.wait_for(
+    #         self.q(css=skip_href).is_focused, "Main content area is focusable'"
+    #     )

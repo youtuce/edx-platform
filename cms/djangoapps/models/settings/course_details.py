@@ -10,7 +10,7 @@ from opaque_keys.edx.locations import Location
 from xmodule.modulestore.exceptions import ItemNotFoundError
 from contentstore.utils import course_image_url, has_active_web_certificate
 from models.settings import course_grading
-from self_paced.models import SelfPacedConfiguration
+from openedx.core.djangoapps.self_paced.models import SelfPacedConfiguration
 from xmodule.fields import Date
 from xmodule.modulestore.django import modulestore
 

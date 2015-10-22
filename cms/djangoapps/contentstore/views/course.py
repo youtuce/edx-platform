@@ -28,6 +28,7 @@ from openedx.core.lib.course_tabs import CourseTabPluginManager
 from openedx.core.djangoapps.credit.api import is_credit_course, get_credit_requirements
 from openedx.core.djangoapps.credit.tasks import update_credit_course_requirements
 from openedx.core.djangoapps.content.course_structures.api.v0 import api, errors
+from openedx.core.djangoapps.self_paced.models import SelfPacedConfiguration
 from xmodule.modulestore import EdxJSONEncoder
 from xmodule.modulestore.exceptions import ItemNotFoundError, DuplicateCourseError
 from opaque_keys import InvalidKeyError
@@ -84,7 +85,6 @@ from course_action_state.managers import CourseActionStateItemNotFoundError
 from microsite_configuration import microsite
 from xmodule.course_module import CourseFields
 from student.auth import has_course_author_access
-from self_paced.models import SelfPacedConfiguration
 
 from util.milestones_helpers import (
     set_prerequisite_courses,

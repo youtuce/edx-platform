@@ -30,8 +30,9 @@ from contentstore.views.component import ADVANCED_COMPONENT_POLICY_KEY
 import ddt
 from xmodule.modulestore import ModuleStoreEnum
 
-from self_paced.models import SelfPacedConfiguration
+from openedx.core.djangoapps.self_paced.models import SelfPacedConfiguration
 from util.milestones_helpers import seed_milestone_relationship_types
+
 
 def get_url(course_id, handler_name='settings_handler'):
     return reverse_course_url(handler_name, course_id)
@@ -87,6 +88,7 @@ class CourseDetailsTestCase(CourseTestCase):
         self.assertEqual(jsondetails['string'], 'string')
 
     def test_update_and_fetch(self):
+        SelfPacedConfiguration(enabled=True).save()
         jsondetails = CourseDetails.fetch(self.course.id)
         jsondetails.syllabus = "<a href='foo'>bar</a>"
         # encode - decode to convert date fields and other data which changes form
@@ -138,7 +140,7 @@ class CourseDetailsTestCase(CourseTestCase):
     def test_self_paced_disabled(self):
         SelfPacedConfiguration(enabled=False).save()
         details = CourseDetails.fetch(self.course.id)
-        self.assertNotIn('self_paced', details.__dict__)
+        self.assertIsNone(details.self_paced)
 
     @override_settings(MKTG_URLS={'ROOT': 'dummy-root'})
     def test_marketing_site_fetch(self):
@@ -320,6 +322,7 @@ class CourseDetailsViewTest(CourseTestCase):
         return Date().to_json(datetime_obj)
 
     def test_update_and_fetch(self):
+        SelfPacedConfiguration(enabled=True).save()
         details = CourseDetails.fetch(self.course.id)
 
         # resp s/b json from here on

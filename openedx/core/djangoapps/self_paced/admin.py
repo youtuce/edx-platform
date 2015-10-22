@@ -1,5 +1,5 @@
 """
-Admin site bindings for self paced courses.
+Admin site bindings for self-paced courses.
 """
 
 from django.contrib import admin

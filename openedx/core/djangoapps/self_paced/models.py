@@ -1,3 +1,7 @@
+"""
+Configuration for self-paced courses.
+"""
+
 from config_models.models import ConfigurationModel
 
 

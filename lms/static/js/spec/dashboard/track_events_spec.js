@@ -8,10 +8,12 @@
 
         describe("edx.dashboard.TrackEvents", function() {
 
-            var GA_PROPERTIES = {
-                category: "dashboard",
-                label: "edX/DemoX/Demo_Course"
-            };
+            function generateProperties() {
+                var properties = {};
+                properties.category = 'dashboard';
+                properties.label ="edX/DemoX/Demo_Course"
+                return properties;
+            }
 
             beforeEach(function() {
                 // Stub the analytics event tracker
@@ -25,7 +27,7 @@
                 expect(window.analytics.trackLink).toHaveBeenCalledWith(
                     $(".course-title > a"),
                     "edx.bi.dashboard.course_title.clicked",
-                     GA_PROPERTIES
+                     generateProperties()
                 );
             });
 
@@ -34,7 +36,7 @@
                 expect(window.analytics.trackLink).toHaveBeenCalledWith(
                     $(".cover"),
                     "edx.bi.dashboard.course_image.clicked",
-                    GA_PROPERTIES
+                    generateProperties
                 );
             });
 
@@ -44,7 +46,7 @@
                 expect(window.analytics.trackLink).toHaveBeenCalledWith(
                     $(".enter-course"),
                     "edx.bi.dashboard.enter_course.clicked",
-                    GA_PROPERTIES
+                    generateProperties
                 );
             });
 
@@ -53,16 +55,16 @@
                 expect(window.analytics.trackLink).toHaveBeenCalledWith(
                     $(".wrapper-action-more"),
                     "edx.bi.dashboard.course_options_dropdown.clicked",
-                    GA_PROPERTIES
+                    generateProperties
                 );
             });
 
             it("sends an analytics event when the user clicks the learned about verified track link", function() {
                 //Verify that analytics events fire when the "Learned about verified track" link is clicked.
                 expect(window.analytics.trackLink).toHaveBeenCalledWith(
-                    $(".message-copy > a"),
+                    $(".verified-info"),
                     "edx.bi.dashboard.verified_info_link.clicked",
-                    GA_PROPERTIES
+                    generateProperties
                 );
             });
 

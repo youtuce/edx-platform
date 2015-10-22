@@ -40,13 +40,25 @@ class CoursePage(PageObject):
         tab_nav = TabNavPage(self.browser)
         return tab_name in tab_nav.tab_names
 
+    def verify_skip_to_container_exists(self):
+        """
+        Checks to make sure a container with an ID that matches
+        the skip link a href is present.
+        """
+        skip_to = self.q(css=".nav-skip").attrs('href')[0]
+        skip_href = skip_to.split('/')[-1]
+        return EmptyPromise(
+            self.q(css=skip_href).is_present, "Main content area is present"
+        ).fulfill()
+
     def skip_to_main_content(self):
         """
-        Ensures skip links function and focus on the intended href
+        Checks to make sure the skip link skips to its href
+        and the container receives focus.
         """
-
         skip_to = self.q(css=".nav-skip").attrs('href')[0]
-        self.q("{}:focus".format(skip_to)).present
-        return EmptyPromise(
-            lambda: self.q(skip_to).present, "Main content area received focus"
-        ).fullfill()
+        skip_href = skip_to.split('/')[-1]
+        self.q(css=skip_href).click
+        self.wait_for(
+            self.q(css=skip_href).is_focused, "Main content area is focusable'"
+        )

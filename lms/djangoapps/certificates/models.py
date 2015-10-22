@@ -109,6 +109,33 @@ class CertificateWhitelist(models.Model):
     course_id = CourseKeyField(max_length=255, blank=True, default=None)
     whitelist = models.BooleanField(default=0)
 
+    @classmethod
+    def certificate_white_list(cls, course_id):
+        """
+        Return certificate white list for the given course as dict object,
+        returned dictionary will have the following key-value pairs
+
+        [{
+            user_id: 'User Id for the student'
+            user_name: 'User name for the student'
+            course_id: 'Course Id '
+        }, {...}, ...]
+
+        """
+        white_list = cls.objects.filter(course_id=course_id)
+        result = []
+
+        for item in white_list:
+            result.append({
+                'id': unicode(item.id),
+                'user_id': unicode(item.user.id),
+                'user_name': unicode(item.user.username),
+                'user_email': unicode(item.user.email),
+                'course_id': unicode(item.course_id),
+
+            })
+        return result
+
 
 class GeneratedCertificate(models.Model):
     """

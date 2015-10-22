@@ -1,0 +1,27 @@
+<% if (certificates.length === 0) { %>
+    <p><%- gettext("No results") %></p>
+<% } else { %>
+    <table>
+        <tr>
+            <th><%- gettext("Name") %></th>
+            <th><%- gettext("User ID") %></th>
+            <th><%- gettext("User Email") %></th>
+            <th><%- gettext("Date Exception Granted") %></th>
+            <th><%- gettext("Free Text Notes") %></th>
+            <th></th>
+        </tr>
+        <% for (var i = 0; i < certificates.length; i++) {
+            var cert = certificates[i];
+        %>
+        <tr>
+            <td><%- cert.get("user_name") %></td>
+            <td><%- cert.get("user_id") %></td>
+            <td><%- cert.get("user_email") %></td>
+            <td><%- cert.get("modified") %></td>
+            <td><%- cert.get("free_text") %></td>
+        </tr>
+        <% } %>
+    </table>
+<% } %>
+
+<input type="button" id="generate-exception-certificates" value="<%- gettext('Generate Exception Certificates') %>" />

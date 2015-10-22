@@ -1,0 +1,6 @@
+<label for="certificate-exception">Student Username or Email:</label>
+<input id="certificate-exception" type="text" placeholder="Student email or username">
+
+<textarea id="free-text-notes" rows="10" placeholder="Free text notes"></textarea>
+<input type="button" id="add-to-white-list" value="Add to Whitelist">
+<div class='error-message'></div>

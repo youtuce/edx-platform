@@ -2680,3 +2680,30 @@ def start_certificate_generation(request, course_id):
         'task_id': task.task_id
     }
     return JsonResponse(response_payload)
+
+
+@ensure_csrf_cookie
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
+@require_global_staff
+@require_POST
+def add_students_to_certificate_white_list(request, course_id):
+    """
+    Add Students to certificate white list.
+    """
+    course_key = CourseKey.from_string(course_id)
+
+    try:
+        certificate_white_list = json.loads(request.body)
+    except ValueError:
+        return HttpResponseBadRequest("Invalid Json data")
+
+    for item in certificate_white_list:
+        user_name = item.get('user_name', '')
+
+    message = _('Certificate generation task for all students of this course has been started. '
+                'You can view the status of the generation task in the "Pending Tasks" section.')
+
+    response_payload = {
+        'message': message,
+    }
+    return JsonResponse(response_payload)
